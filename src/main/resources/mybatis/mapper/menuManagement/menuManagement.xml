@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="menuModule">  
+	
+	<cache eviction="FIFO" flushInterval="60000" size="1024" readOnly="true"/> 
+	
+	<resultMap type="com.cootoo.menuManagement.domain.Module" id="ModuleMap">
+		<result property="moduleID" column="moduleID"/>
+		<result property="moduleName" column="moduleName"/>
+		<result property="style" column="style"/>
+		<collection property="functions" ofType="com.cootoo.menuManagement.domain.Function">
+			<result property="functionID" column="functionID"/>
+			<result property="functionName" column="functionName"/>
+			<result property="functionURL" column="functionURL"/>
+		</collection>
+	</resultMap>
+	
+	<resultMap type="com.cootoo.menuManagement.domain.Menu" id="MenuMap">
+		<result property="role" column="role"/>
+		<collection property="modules" ofType="com.cootoo.menuManagement.domain.Module">
+			<result property="moduleID" column="moduleID"/>
+			<result property="moduleName" column="moduleName"/>
+			<result property="style" column="style"/>
+			<collection property="functions" ofType="com.cootoo.menuManagement.domain.Function">
+				<result property="functionID" column="functionID"/>
+				<result property="functionName" column="functionName"/>
+				<result property="functionURL" column="functionURL"/>
+			</collection>
+		</collection>
+	</resultMap>
+	
+	
+	
+	
+	<select id="getMenus" resultMap="ModuleMap">
+		select *
+		from ${db_conn}.tModule a join ${db_conn}.tFunction b on a.moduleID = b.moduleID
+		order by a.moduleID,sort
+	</select>
+	
+	<select id="selectRoleFunctions" parameterType="int" resultMap="MenuMap">
+		select
+		moduleID,
+		moduleName, 
+		style,
+		functionID,
+		functionName,
+		functionURL,
+		role
+		from (
+		select distinct a.userID,
+		e.moduleName,
+        e.style,
+		d.functionID,
+		d.functionName,
+		d.functionURL,
+		d.moduleID,
+		d.sort
+		from ${db_conn}.tUserToGroup a inner join ${db_conn}.tGroupToRole b on a.groupID=b.groupID
+		inner join ${db_conn}.tRoleToFunction c on b.roleID = c.roleID
+		inner join ${db_conn}.tFunction d on c.functionID = d.functionID
+		inner join ${db_conn}.tModule e on d.moduleID = e.moduleID
+		where a.userID = #{userID}
+		order by e.moduleID,d.sort
+		) f inner join 
+		(select h.userID,group_concat(j.roleName) as role 
+		from ${db_conn}.tUserToGroup h inner join ${db_conn}.tGroupToRole i on h.groupID = i.groupID
+		inner join ${db_conn}.tRole j on i.roleID = j.roleID where h.userID = #{userID}
+		) g on f.userID = g.userID
+	
+	</select>
+	
+	
+	<select id="getModules" resultType="com.cootoo.menuManagement.domain.Module">
+	   select moduleID,
+	   		  moduleName,
+	   		  style
+	   from ${db_conn}.tModule;
+	</select>
+	
+	<select id="getFunctions" parameterType="int" resultType="com.cootoo.menuManagement.domain.Function">
+	   SELECT functionID,
+	          functionName,
+	          functionURL
+ 	   FROM ${db_conn}.tFunction
+ 	   WHERE moduleID = #{moduleID};
+	</select>
+	
+</mapper>

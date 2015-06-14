@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="departModule">  
+	
+	<cache eviction="FIFO" flushInterval="60000" size="1024" readOnly="true"/>
+
+    <insert id="insertDepartment" parameterType="list">
+		insert into ${db_conn}.tDepartment(departmentID,
+										   departmentName,
+										   departmentPID,
+										   departmentType,
+										   departmentPosition,
+										   departmentDescription,
+										   orgID
+										  )values
+		<foreach collection="list" item="item" separator=",">
+			(#{item.departmentID},#{item.departmentName},#{item.departmentPID},#{item.departmentType},#{item.departmentPosition},#{item.departmentDescription},#{item.orgID})
+		</foreach>
+	</insert>
+
+	
+</mapper>

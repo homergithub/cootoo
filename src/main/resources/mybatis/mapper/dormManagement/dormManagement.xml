@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="dormModule">  
+	
+	<cache eviction="FIFO" flushInterval="60000" size="1024" readOnly="true"/> 
+	
+	<resultMap type="com.cootoo.dormManagement.domain.People" id="PeopleMap">
+		<result column="peopleID" property="id"/>
+		<result column="departmentID" property="pId"/>
+		<result column="peopleName" property="name"/>
+		<result column="type" property="type"/>
+		<result column="locationID" property="locationID"/>
+	</resultMap>
+	
+	
+	<select id="getAllStudentBySchool" resultMap="PeopleMap" parameterType="hashmap">
+
+		select cast(orgID as char) as peopleID,
+				'-1' as departmentID,
+				orgName as peopleName,
+				'-1' as type,
+				'-1' as locationID,
+				'-1' as isAllocated
+		from ${db_conn}.tOrganization where orgID = #{orgID}
+		union all
+		select departmentID,
+		       departmentPID,
+		       departmentName,
+		       '-1' as type,
+		       '-1' as locationID,
+		       '-1' as isAllocated 
+		from ${db_conn}.tDepartment where orgID = #{orgID}
+		union all
+		select a.peopleID,
+			   a.departmentID,
+			   case when d.unitName is null then peopleName
+                    else  concat(peopleName,'(',d.unitName,')') 
+               end as peopleName,
+			   '0' as type,
+			   c.locationID,
+			   isAllocated
+        from ${db_conn}.tPeople a join ${db_conn}.tDepartment b on a.departmentID = b.departmentID 
+        left join ${db_conn}.tPeopleToLocation c on c.peopleID = a.peopleID
+        left join ${db_conn}.tUnitLocation d on d.locationID = c.locationID
+        where b.orgID = #{orgID}
+        <if test="sex != '0'.toString()">
+        	and a.sex = #{sex}
+        </if>
+	</select>
+	
+	<!-- 得到locationID下的房间 -->
+	<select id="getAllDormByOrgID" parameterType="hashmap" resultType="com.cootoo.metamanagement.domain.UnitLocation">
+		select locationID 
+		from ${db_conn}.tUnitLocation
+		where treePath like concat('%',${unitID},'%')  and unitType = '3' and orgID = #{orgID};
+	</select>
+	
+	<!-- 得到房间的剩余床铺数 -->
+	<select id="getDormRestSize" parameterType="hashmap" resultType="hashmap">
+		select a.locationID,
+	   		   a.parentNode,
+	   		   a.unitName,
+	   		   a.treePath,
+	   		   a.unitType, 
+	   		   a.unitSize-ifnull(b.peopled,0) as restSize
+	   from ${db_conn}.tUnitLocation a left join (select locationID,count(*) as peopled from ${db_conn}.tPeopleToLocation group by locationID) b 
+	   on a.locationID = b.locationID
+	   where a.orgID = #{orgID} and a.locationID = #{locationID}
+	</select>
+	
+	
+	<insert id="insertUserToLocation" parameterType="hashmap">
+		insert into ${db_conn}.tPeopleToLocation(peopleID,
+											   locationID,
+											   peopleLocationLinkType
+											  )values
+		<foreach collection="userToLocationList" item="item" separator=",">
+			(#{item.peopleID},#{item.locationID},#{item.userLocationLinkType})
+		</foreach>
+		
+	</insert>
+	
+	
+	<insert id="insertMoveLocation" parameterType="hashmap">
+		insert into ${db_conn}.tMoveLocation(moveDescription,
+											 peopleID,
+											 fromLocationID,
+											 toLocationID,
+											 moveLocationTime,
+											 moveLocationType
+											)values
+		<foreach collection="moveLocations" item="item" separator=",">
+		 	(#{item.moveDescription},#{item.peopleID},#{item.fromLocationID},#{item.toLocationID},#{item.moveLocationTime},#{item.moveLocationType})
+		</foreach>
+	</insert>
+	
+	
+	<update id="updatePeopleIsAllocated" parameterType="hashmap">
+		update ${db_conn}.tPeople set isAllocated = #{isAllocated} where peopleID in
+		<foreach collection="peopleIDList" open="(" close=")" separator="," item="peopleID">
+			#{peopleID}
+		</foreach>
+	</update>
+	
+	<!-- 出宿 -->
+	<delete id="deletePeopleFromUnitLocation" parameterType="hashmap">
+		delete from ${db_conn}.tPeopleToLocation where peopleID in
+		<foreach collection="peopleIDList" item="item" separator="," open="(" close=")">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<!-- 获取已住人员信息 -->
+	<select id="getPeopleUnitLocation" parameterType="string" resultType="hashmap">
+		select a.peopleID,
+			   b.locationID,
+			   c.unitName,
+			   peopleLocationLinkType
+		from ${db_conn}.tPeople a left join ${db_conn}.tPeopleToLocation b on a.peopleID = b.peopleID
+		join ${db_conn}.tUnitLocation c on b.locationID = c.locationID
+		where a.peopleID = #{peopleID}
+	</select>
+	
+	
+	<!-- 已住人员调整 -->
+	<update id="updatePeopleUnitLocation" parameterType="hashmap">
+		 update ${db_conn}.tPeopleToLocation set locationID = #{locationID} where peopleID = #{peopleID}
+	</update>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</mapper>

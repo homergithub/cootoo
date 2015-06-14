@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<beans xmlns="http://www.springframework.org/schema/beans"  
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"   
+    xmlns:context="http://www.springframework.org/schema/context"  
+    xmlns:mvc="http://www.springframework.org/schema/mvc"  
+    xmlns:jaxws="http://cxf.apache.org/jaxws" 
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans   
+            http://www.springframework.org/schema/beans/spring-beans-4.0.xsd  
+            http://www.springframework.org/schema/context  
+            http://www.springframework.org/schema/context/spring-context-4.0.xsd  
+            http://www.springframework.org/schema/mvc   
+            http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd 
+            http://www.springframework.org/schema/aop 
+    		http://www.springframework.org/schema/aop/spring-aop-4.0.xsd 
+            http://www.springframework.org/schema/tx 
+            http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+            http://www.springframework.org/schema/util
+            http://www.springframework.org/schema/util/spring-util-4.0.xsd"
+            default-lazy-init="false">  
+
+
+   	 <context:property-placeholder location="classpath:config/db.properties" ignore-unresolvable="true"/>
+    
+     <context:property-placeholder location="classpath:config/redis.properties" ignore-unresolvable="true"/>
+   
+     
+     <bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig">  
+        <property name="maxIdle" value="${redis.maxIdle}" />  
+        <property name="maxActive" value="${redis.maxActive}" />  
+        <property name="maxWait" value="${redis.maxWait}" />  
+        <property name="testOnBorrow" value="${redis.testOnBorrow}" />  
+    </bean>  
+      
+    <bean id="connectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
+    	<property name="hostName" value="${redis.host}" />  
+    	<property name="port"  value="${redis.port}" />  
+    	<property name="password" value="${redis.pass}"/>
+    <property  name="poolConfig"  ref="poolConfig" /> 
+    </bean>  
+      
+    <bean id="redisTemplate" class="org.springframework.data.redis.core.StringRedisTemplate">  
+        <property name="connectionFactory"   ref="connectionFactory" />  
+    </bean>         
+     
+
+    <!-- 配置数据源	供查询操作-->
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close"> 
+      <property name="url" value="${jdbc.url}" />
+      <property name="username" value="${jdbc.username}" />
+      <property name="password" value="${jdbc.password}" />
+      <property name="initialSize" value="${jdbc.initialSize}" />
+      <property name="minIdle" value="${jdbc.minIdle}" /> 
+      <property name="maxActive" value="${jdbc.maxActive}" />
+      <property name="maxWait" value="${jdbc.maxWait}" />
+      <property name="testWhileIdle" value="${jdbc.testWhileIdle}"/>
+      <property name="timeBetweenEvictionRunsMillis" value="${jdbc.timeBetweenEvictionRunsMillis}" />
+      <property name="minEvictableIdleTimeMillis" value="${jdbc.minEvictableIdleTimeMillis}" />
+      <property name="poolPreparedStatements" value="${jdbc.poolPreparedStatements}" />
+      <property name="maxPoolPreparedStatementPerConnectionSize" value="${jdbc.maxPoolPreparedStatementPerConnectionSize}" />
+      <property name="filters" value="${jdbc.filters}" />
+	</bean>
+    
+	<!-- 事务管理器  -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">  
+      <property name="dataSource" ref="dataSource" />  
+    </bean>  
+ 
+	<!-- 事务处理面 -->
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+      <tx:attributes>
+    	<tx:method name="add*"    propagation="REQUIRED" read-only="false" rollback-for="java.lang.Exception"/>
+      	<tx:method name="delete*" propagation="REQUIRED" read-only="false" rollback-for="java.lang.Exception" />  		
+		<tx:method name="insert*" propagation="REQUIRED" read-only="false" rollback-for="java.lang.Exception" />
+		<tx:method name="update*" propagation="REQUIRED" read-only="false" rollback-for="java.lang.Exception" />
+		<tx:method name="modify*" propagation="REQUIRED" read-only="false" rollback-for="java.lang.Exception" />
+		<tx:method name="remove*" propagation="REQUIRED" read-only="false" rollback-for="java.lang.Exception" />
+		<tx:method name="find*" read-only="true"/>
+		<tx:method name="get*" read-only="true"/>
+		<tx:method name="select*" read-only="true"/>
+		<tx:method name="query*" read-only="true"/>
+      </tx:attributes>
+    </tx:advice>
+    
+    <!-- AOP方式配置事务 -->
+	<aop:config>    
+	  <aop:pointcut id="pc" expression="execution(public * com.cootoo.*.service.*.*(..))" /> 
+	  <aop:advisor pointcut-ref="pc" advice-ref="txAdvice" />
+    </aop:config>
+		
+	<!-- 配置mybatis的数据源，以及config文件的位置 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">  
+	  <property name="dataSource" ref="dataSource" />  
+	  <property name="configLocation" value="classpath:mybatis/mybatis-config.xml"></property>  
+	</bean>  
+	
+	 
+	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate" scope="prototype">  
+        <constructor-arg ref="sqlSessionFactory"/>  
+    </bean>         
+            
+          
+</beans>

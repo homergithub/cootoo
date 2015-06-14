@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="metaModule">  
+	
+	<cache eviction="FIFO" flushInterval="60000" size="1024" readOnly="true"/>
+
+    <resultMap type="com.cootoo.metamanagement.domain.Location" id="LocationMap">
+        <result column="locationID" property="id"/>
+        <result column="parentNode" property="pId"/>
+        <result column="unitName" property="name"/>
+        <result column="unitType" property="unitType"/>
+        <result column="restSize" property="restSize"/>
+    </resultMap>
+
+    <select id="getAllLocations" parameterType="int"  resultMap="LocationMap">
+	   select a.locationID,
+	   		  a.parentNode,
+	   		  a.unitName,
+	   		  a.treePath,
+	   		  a.unitType,
+	   		  IFNULL(a.unitSize,0)-IFNULL(b.peopled,0) as restSize
+	   from ${db_conn}.tUnitLocation a left join (select locationID,count(*) as peopled from ${db_conn}.tPeopleToLocation group by locationID) b 
+	   on a.locationID = b.locationID
+	   where a.orgID = #{orgID}
+	</select>
+	
+	<select id="getTreePathByOrgID" parameterType="int" resultType="int">
+		select count(*) FROM ${db_conn}.tUnitLocation 
+		where orgID = #{orgID}
+		and treePath is null;
+	</select>
+	
+	<select id="getUnitLocationByLocationID" parameterType="hashmap" resultType="com.cootoo.metamanagement.domain.UnitLocation">
+		select a.locationID,
+			   a.unitName,
+			   a.parentNode,
+			   b.unitName as bUnitName,
+			   a.unitType,
+			   a.unitSize,
+			   a.sex 
+	    from ${db_conn}.tUnitLocation a join ${db_conn}.tUnitLocation b
+	    on a.parentNode = b.locationID
+	    where a.locationID = #{locationID} and a.orgID = #{orgID}
+	</select>
+	
+	<select id="getUnitLocationByLocationParent" parameterType="hashmap" resultType="com.cootoo.metamanagement.domain.UnitLocation">
+		select locationID,
+			   unitName,
+			   parentNode,
+			   unitType,
+			   unitSize,
+			   sex 
+	    from ${db_conn}.tUnitLocation  where locationID = #{locationID} and orgID = #{orgID}
+	</select>
+	
+	<insert id="insertUnitLocationList" parameterType="list">
+		insert into ${db_conn}.tUnitLocation(locationID,
+												 unitName,
+												 parentNode,
+												 unitType,
+												 orgID,
+												 unitSize,
+												 sex)values
+		<foreach collection="list" item="item" separator=",">
+			(#{item.locationID},#{item.unitName},#{item.parentNode},#{item.unitType},#{item.orgID},#{item.unitSize},#{item.sex})
+		</foreach>							      
+	</insert>
+	
+	<delete id="deleteUnitLocationList" parameterType="list">
+		delete from ${db_conn}.tUnitLocation where locationID in 
+		(
+			<foreach collection="list" item="item" separator=",">
+				#{item.locationID}
+			</foreach>
+		)
+	</delete>
+	 
+	<insert id="insertUnitLocation" parameterType="com.cootoo.metamanagement.domain.UnitLocation">
+		insert into ${db_conn}.tUnitLocation(locationID,
+												 unitName,
+												 parentNode,
+												 unitType,
+												 orgID,
+												 unitSize,
+												 sex) 
+		values(#{locationID},#{unitName},#{parentNode},#{unitType},#{orgID},#{unitSize},#{sex})
+	</insert>
+	
+	<delete id="deleteUnitLocation" parameterType="java.lang.reflect.Array">
+		delete from ${db_conn}.tUnitLocation where locationID in 
+		<foreach collection="array" index="index" item="item" open="(" separator="," close=")">  
+            #{item}   
+    	</foreach>  
+	</delete>
+	
+	
+	<select id="getUnitLocationTreePath" parameterType="hashmap" resultType="hashmap">
+		select parentNode,treePath 
+		from ${db_conn}.tUnitLocation 
+		where locationID = #{locationID} and orgID = #{orgID}
+	</select>
+	
+	
+	<update id="updateUnitLocationTreePath" parameterType="hashmap">
+		update ${db_conn}.tUnitLocation set treePath = replace(treePath,#{oldTreePath},#{newTreePath})
+		where locationID = #{locationID} and orgID = #{orgID}
+	</update>
+	
+	
+	<update id="updateAllTreePath" parameterType="hashmap">
+		update ${db_conn}.tUnitLocation set treePath = replace(treePath,#{tempTreePath},#{newTreePath})
+		where orgID = #{orgID} and treePath like concat(#{oldTreePath},'%') 
+	</update>
+	
+	
+	
+	
+	
+	
+	
+	<update id="updateUnitLocation" parameterType="com.cootoo.metamanagement.domain.UnitLocation">
+		update ${db_conn}.tUnitLocation set unitName=#{unitName},
+											parentNode=#{parentNode},
+											unitType=#{unitType},
+											unitSize = #{unitSize},
+											sex = #{sex}
+		where locationID = #{locationID} and orgID = #{orgID}
+	</update>
+	
+	
+	
+	
+	
+	<insert id="insertRepeater" parameterType="com.cootoo.metamanagement.domain.Repeater">
+		insert into ${db_conn}.tRepeater(repeaterID,
+										 repeaterName,
+										 repeaterIP,
+										 locationID,
+										 updateTime
+										 )
+		values(#{repeaterID},#{repeaterName},#{repeaterIP},#{locationID},now())
+	</insert>
+	
+	<select id="getAllRepeater" parameterType="int" resultMap="LocationMap">
+		select locationID,parentNode,unitName,unitType
+		from ${db_conn}.tUnitLocation where orgID = #{orgID} and unitType != '3'
+		union all
+		select repeaterID as locationID,a.locationID as parentNode,repeaterName as unitName,'-1' as unitType
+		from ${db_conn}.tRepeater a join ${db_conn}.tUnitLocation b on a.locationID = b.locationID
+		where b.orgID = #{orgID} and unitType != '3'
+	</select>
+	
+	<select id="getRepeaterByLocation" parameterType="hashmap" resultMap="LocationMap">
+		select repeaterID as locationID, a.locationID as parentNode,repeaterName as unitName,'0' as unitType
+		from ${db_conn}.tRepeater a join ${db_conn}.tUnitLocation b on a.locationID = b.locationID
+		where a.locationID = #{locationID} and b.orgID = #{orgID}
+	</select>
+	
+	<select id="getRepeater" parameterType="hashmap" resultType="com.cootoo.metamanagement.domain.Repeater">
+		select repeaterID,
+			   repeaterName,
+			   repeaterIP,
+			   b.unitName,
+			   b.locationID
+	    from ${db_conn}.tRepeater a join ${db_conn}.tUnitLocation b on a.locationID = b.locationID  
+        where b.orgID = #{orgID}   and  repeaterID = #{repeaterID}
+	</select>
+	
+	<update id="updateRepeater" parameterType="com.cootoo.metamanagement.domain.Repeater">
+		update ${db_conn}.tRepeater set repeaterName = #{repeaterName},repeaterIP = #{repeaterIP},
+		locationID = #{locationID},updateTime = now()	
+		where repeaterID = #{repeaterID}
+	</update>
+	
+	<delete id="deleteRepeater" parameterType="string">
+		delete from ${db_conn}.tRepeater where repeaterID = #{repeaterID}
+	</delete>
+	
+	<!-- 门锁信息录入 -->
+	<insert id="insertLock" parameterType="com.cootoo.metamanagement.domain.Lock">
+		insert into ${db_conn}.tLock(lockMacID,
+									 lockName,
+									 locationID,
+									 isLive,
+									 repeaterID,
+									 updateTime
+									)
+		values(#{lockMacID},#{lockName},#{locationID},#{isLive},#{repeaterID},#{updateTime})
+	</insert>
+	
+	<!-- 查询所有门锁信息 -->
+	<select id="getAllLock" parameterType="int" resultMap="LocationMap">
+        select locationID,parentNode,unitName,unitType from ${db_conn}.tUnitLocation where orgID = #{orgID} and unitType != 3
+            union all
+            select repeaterID,a.locationID,repeaterName,'0' as unitType from ${db_conn}.tRepeater a
+            join ${db_conn}.tUnitLocation b on a.locationID = b.locationID where b.orgID = #{orgID}
+            union all
+            select lockMacID,repeaterID,lockName,'-1' as unitType from ${db_conn}.tLock a
+            join ${db_conn}.tUnitLocation b on a.locationID = b.locationID where b.orgID = #{orgID}
+	</select>
+	
+	<!-- 查询门锁信息 -->
+	<select id="getLock" parameterType="hashmap" resultType="com.cootoo.metamanagement.domain.Lock">
+		select lockMacID,
+	           lockName,
+	           a.locationID,
+       	       b.unitName,
+	   		   isLive,
+	   		   a.repeaterID,
+               c.repeaterName
+		from ${db_conn}.tLock a join ${db_conn}.tUnitLocation b on a.locationID = b.locationID 
+	    join ${db_conn}.tRepeater c on a.repeaterID = c.repeaterID
+		where b.orgID = #{orgID} and lockMacID = #{lockMacID}
+	</select>
+	
+	<!-- 门锁信息修改 -->
+	<update id="updateLock" parameterType="com.cootoo.metamanagement.domain.Lock">
+		update ${db_conn}.tLock set lockName = #{lockName},locationID = #{locationID},isLive=#{isLive},repeaterID =#{repeaterID},updateTime=#{updateTime}
+		where lockMacID = #{lockMacID}
+	</update>
+	<!-- 删除锁 -->
+	<delete id="deleteLock" parameterType="string">
+		delete from ${db_conn}.tLock where lockMacID = #{lockMacID}
+	</delete>
+	
+	<!-- 获取门卡类别 -->
+	<select id="getCardType" resultType="com.cootoo.metamanagement.domain.CardType">
+		select cardTypeID,cardTypeName from ${db_conn}.tCardType
+	</select>
+	
+	<!-- 门卡信息录入 -->
+	<insert id="insertCard" parameterType="com.cootoo.metamanagement.domain.Card">
+		insert into ${db_conn}.tCard(cardMacID,
+									 cardRegisterTime,
+									 cardIsLive,
+									 cardTypeID,
+									 cardName,
+									 orgID
+									)
+		values(#{cardMacID},#{cardRegisterTime},#{cardIsLive},#{cardTypeID},#{cardName},#{orgID})
+	</insert>
+	
+	<!-- 门卡信息批量录入 -->
+	<insert id="insertCardList" parameterType="list">
+		insert into ${db_conn}.tCard(cardMacID,
+									 cardRegisterTime,
+									 cardIsLive,
+									 cardTypeID,
+									 cardName,
+									 orgID
+									)values
+		<foreach collection="list" item="item" separator=",">
+		 (#{item.cardMacID},now(),#{item.cardIsLive},#{item.cardTypeID},#{item.cardName},#{item.orgID})
+		</foreach>
+	   
+	</insert>
+	
+	
+	
+	<!-- 根据条件查询门卡 -->
+	<select id="getAllCardByOrgID" parameterType="hashmap" resultType="hashmap">
+		select cardMacID,
+			   cardRegisterTime,
+			   cardIsLive,
+			   cardTypeID,
+			   cardName
+	    from ${db_conn}.tCard where orgID = #{orgID}
+	    <if test="cardTypeID!=null and cardTypeID!=-1">
+	    	and cardTypeID = #{cardTypeID}
+	    </if>
+	    <if test="cardName!=null and cardName!=-1">
+	    	and cardName = #{cardName}
+	    </if>
+	</select>
+	
+	
+	<!-- 门卡信息修改 -->
+	<update id="updateCard" parameterType="com.cootoo.metamanagement.domain.Card">
+		update ${db_conn}.tCard set cardIsLive=#{cardIsLive},cardTypeID=#{cardTypeID},
+									cardName = #{cardName}
+		where cardMacID = #{cardMacID}
+	</update>
+	
+	<!-- 门卡信息删除 -->
+	<delete id="deleteCard" parameterType="string">
+		delete from ${db_conn}.tCard where cardMacID = #{cardMacID}
+	</delete>
+	
+	<!-- 门卡批量删除 -->
+	<delete id="deleteCards" parameterType="list">
+		delete from ${db_conn}.tCard where cardMacID in 
+		(
+			<foreach collection="list" item="item" separator=",">
+				#{item.cardMacID}
+			</foreach>
+		)
+	</delete>
+	
+	
+	<insert id="insertPeople" parameterType="list">
+		insert into ${db_conn}.tPeople(peopleID,
+									   peopleName,
+									   peopleTypeID,
+									   peopleSignID,
+									   peopleTel,
+									   departmentID,
+									   userMark,
+									   isAllocated,
+									   sex
+									  )values
+		<foreach collection="list" item="item" separator=",">
+			(#{item.peopleID},#{item.peopleName},#{item.peopleTypeID},#{item.peopleSignID},#{item.peopleTel},#{item.departmentID},#{item.userMark},#{item.isAllocated},#{item.sex})
+		</foreach>							      
+	</insert>
+	
+	<delete id="deletePeople" parameterType="list">
+		delete from ${db_conn}.tPeople where peopleID in 
+		(
+			<foreach collection="list" item="item" separator=",">
+				#{item.peopleID}
+			</foreach>
+		)
+	</delete>
+	
+	
+	<insert id="insertPeopleToCard" parameterType="hashmap">
+		insert into ${db_conn}.tPeopleToCard(peopleID,cardMacID) values(#{peopleID},#{cardMacID})
+	</insert>
+	
+	
+	<insert id="insertDepartment" parameterType="list">
+		insert into ${db_conn}.tDepartment(departmentID,
+										   departmentName,
+										   departmentPID,
+										   departmentType,
+										   departmentPosition,
+										   departmentDescription,
+										   orgID
+										  )values
+		<foreach collection="list" item="item" separator=",">
+			(#{item.departmentID},#{item.departmentName},#{item.departmentPID},#{item.departmentType},#{item.departmentPosition},#{item.departmentDescription},#{item.orgID})
+		</foreach>
+	</insert>
+	
+	
+	<!--部门卡批量删除 -->
+	<delete id="deleteDepartments" parameterType="list">
+		delete from ${db_conn}.tDepartment where departmentID in 
+		(
+			<foreach collection="list" item="item" separator=",">
+				#{item.departmentID}
+			</foreach>
+		)
+	</delete>
+	
+	<!-- 批量录入用户和门卡信息 -->
+	<insert id="insertUserToCard" parameterType="list">
+		insert into ${db_conn}.tPeopleToCard(peopleID,cardMacID)values
+		<foreach collection="list" item="item" separator=",">
+			(#{item.peopleID},#{item.cardMacID})
+		</foreach>
+	</insert>
+	
+	<delete id="deleteUserToCard" parameterType="com.cootoo.metamanagement.domain.UserToCard">
+		delete from ${db_conn}.tPeopleToCard where peopleID = #{peopleID} and cardMacID = #{cardMacID}
+	</delete>
+	
+	
+	<insert id="insertOrganization" parameterType="com.cootoo.metamanagement.domain.Organization">
+		insert into ${db_conn}.tOrganization(orgID,orgName)values(#{orgID},#{orgName})
+	</insert>
+	
+	
+	<!-- 批量录入管理卡信息 -->
+	<insert id="insertManagerCard" parameterType="list">
+		insert into ${db_conn}.tManager(managerCardID,
+										managerCardName,
+										managerType,
+										orgID
+										)values
+		<foreach collection="list" item="item" separator=",">
+			(#{item.managerCardID},#{item.managerCardName},#{item.managerType},#{item.orgID})
+		</foreach>
+	</insert>
+	
+	<delete id="deleteManagerCard" parameterType="list">
+		delete from ${db_conn}.tManager where managerCardID in 
+		(
+			<foreach collection="list" item="item" separator=",">
+				#{item.managerCardID}
+			</foreach>
+		)
+	</delete>
+	
+	
+	
+	<!-- 批量录入管理卡-建筑单元信息 -->
+	<insert id="insertManagerCardToLocation" parameterType="list">
+		insert into ${db_conn}.tRegional(managerCardID,
+										 locationID
+										)values
+		<foreach collection="list" item="item" separator=",">
+			(#{item.managerCardID},#{item.locationID})
+		</foreach>
+	</insert>
+	
+	
+	<delete id="deleteManagerCardToLocation" parameterType="com.cootoo.metamanagement.domain.ManagerCardToLocation">
+		delete from ${db_conn}.tRegional where managerCardID =#{managerCardID} and locationID = #{locationID}
+	</delete>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</mapper>

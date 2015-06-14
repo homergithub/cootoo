@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="unitLocationModule">  
+	
+	<cache eviction="FIFO" flushInterval="60000" size="1024" readOnly="true"/>
+
+	<!-- 添加建筑信息 -->
+   	<insert id="insertUnitLocation" parameterType="list">
+		insert into ${db_conn}.tUnitLocation(locationID,
+										     unitName,
+											 parentNode,
+											 unitType,
+											 unitSize,
+											 sex,
+											 orgID)values
+		<foreach collection="list" item="item" separator=",">
+			(#{item.locationID},#{item.unitName},#{item.parentNode},#{item.unitType},#{item.unitSize},#{item.sex},#{item.orgID})
+		</foreach>							      
+	</insert>
+	
+	<!-- 删除建筑信息(List对象中存locationID字符串) -->
+	<delete id="deleteUnitLocation" parameterType="list">
+		delete from ${db_conn}.tUnitLocation where locationID in 
+		(
+			<foreach collection="list" item="item" separator=",">
+				#{item}
+			</foreach>
+		)
+	</delete>
+	
+	<!-- 修改建筑信息 -->
+	<update id="updateUnitLocation" parameterType="com.cootoo.metamanagement.domain.UnitLocation">
+		update ${db_conn}.tUnitLocation set unitName=#{unitName},
+											unitType=#{unitType},
+											unitSize = #{unitSize},
+											sex = #{sex}
+		where locationID = #{locationID}
+	</update>
+	
+</mapper>

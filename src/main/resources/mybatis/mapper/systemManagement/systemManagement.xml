@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="systemModule">  
+	
+	<cache eviction="FIFO" flushInterval="60000" size="1024" readOnly="true"/> 
+	
+	
+	<resultMap type="com.cootoo.systemmanagement.domain.LoginRole" id="UserRoleMap">
+		<result property="loginAccount" column="loginAccount"/>
+		<result property="roleID" column="roleID"/>
+		<result property="roleName" column="roleName"/>
+		<result property="orgName" column="orgName"/>
+		<collection property="modules" ofType="com.cootoo.menuManagement.domain.Module">
+			<result property="moduleID" column="moduleID"/>
+			<result property="moduleName" column="moduleName"/>
+			<result property="style" column="style"/>
+			<collection property="functions" ofType="com.cootoo.menuManagement.domain.Function">
+				<result property="functionID" column="functionID"/>
+				<result property="functionName" column="functionName"/>
+				<result property="functionURL" column="functionURL"/>
+			</collection>
+		</collection>
+	</resultMap>
+	
+	
+	
+	<select id="selectLoginUser" parameterType="hashmap" resultType="com.cootoo.systemmanagement.domain.Login">
+	   select loginID,
+	          loginAccount,
+	          loginPassword,
+	          orgID,
+	          roleID
+ 	   from ${db_conn}.tLogin
+ 	   where loginAccount = #{loginAccount} and loginPassword = #{loginPassword} limit 1;
+	</select>
+	
+	<select id="selectRoleFunctions" parameterType="int" resultMap="UserRoleMap">
+		select a.loginAccount,
+		f.orgName,
+		b.roleID,
+		b.roleName,
+		d.functionID,
+		d.functionName,
+		d.functionURL,
+		e.moduleID,
+		e.moduleName,
+		e.style
+		from ${db_conn}.tLogin a inner join ${db_conn}.tRole b on a.roleID = b.roleID
+		inner join ${db_conn}.tRoleToFunction c on c.roleID = b.roleID
+		inner join ${db_conn}.tFunction d on d.FunctionID = c.functionID
+		inner join ${db_conn}.tModule e on e.moduleID = d.moduleID
+		inner join ${db_conn}.tOrganization f on f.orgID = a.orgID
+		where a.loginID=#{loginID}
+	</select>
+	
+	
+	<select id="selectAllRole" resultType="com.cootoo.systemmanagement.domain.Role">
+		select * from ${db_conn}.tRole
+	</select>
+	
+	<insert id="insertLogin" parameterType="com.cootoo.systemmanagement.domain.Login">
+		insert into ${db_conn}.tLogin(loginAccount,loginPassword,orgID,roleID)values(#{loginAccount},#{loginPassword},#{orgID},#{roleID})	
+	</insert>
+	
+</mapper>
