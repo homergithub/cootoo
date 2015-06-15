@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.cootoo.metamanagement.domain.UnitLocation;
 import com.cootoo.metamanagement.service.UnitLocationManagementService;
 
-@Controller
 @RequestMapping(value="/unitLocationManagement/")
+@Controller
 public class UnitLocationManagementAction{
 
 	@Autowired

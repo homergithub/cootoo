@@ -6,4 +6,36 @@
 	
 	<cache eviction="FIFO" flushInterval="60000" size="1024" readOnly="true"/>
 	
+	<!-- 门卡信息添加 -->
+	<insert id="insertCard" parameterType="list">
+		insert into ${db_conn}.tCard(cardMacID,
+									 cardRegisterTime,
+									 cardIsLive,
+									 cardTypeID,
+									 cardName,
+									 orgID
+									)values
+		<foreach collection="list" item="item" separator=",">
+		 (#{item.cardMacID},#{item.cardRegisterTime},#{item.cardIsLive},#{item.cardTypeID},#{item.cardName},#{item.orgID})
+		</foreach>   
+	</insert>
+	
+	<!-- 门卡删除 -->
+	<delete id="deleteCard" parameterType="list">
+		delete from ${db_conn}.tCard where cardMacID in 
+		(
+			<foreach collection="list" item="item" separator=",">
+				#{item}
+			</foreach>
+		)
+	</delete>
+	
+	<!-- 门卡信息修改 -->
+	<update id="updateCard" parameterType="com.cootoo.metamanagement.domain.Card">
+		update ${db_conn}.tCard set cardIsLive=#{cardIsLive},cardTypeID=#{cardTypeID},
+									cardName = #{cardName},orgID = #{orgID}
+		where cardMacID = #{cardMacID}
+	</update>
+	
+	
 </mapper>

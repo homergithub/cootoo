@@ -53,12 +53,12 @@ public class CardImporter extends ExcelUtil<Card> {
 					}
 					card.setCardTypeID(intCardType);
 				}else if(k==ORG_ID_COLUMN){
-					String orgID = getStringCellValue(cell);
-					Integer intOrgID = null;
-					if(orgID != null){
-						intOrgID = Integer.parseInt(orgID);
-					}
-					card.setOrgID(intOrgID);
+					//String orgID = getStringCellValue(cell);
+//					//Integer intOrgID = null;
+//					if(orgID != null){
+//						intOrgID = Integer.parseInt(orgID);
+//					}
+					//card.setOrgID(intOrgID);
 				}
 			}
 			

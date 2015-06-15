@@ -3,46 +3,20 @@ package com.cootoo.metamanagement.domain;
 public class Card {
 
 	private String cardMacID;
-	private int cardName;
+	private Integer cardName;
 	private String cardIsLive;
 	private String cardRegisterTime;
-	private int cardTypeID;
-	private int orgID;
+	private Integer cardTypeID;
+	private String orgID;
 		
 	public Card() {
 		super();
 	}
-	
-	
-	
-	public Card(String cardMacID, int cardName, String cardIsLive,
-			int cardTypeID) {
-		super();
-		this.cardMacID = cardMacID;
-		this.cardName = cardName;
-		this.cardIsLive = cardIsLive;
-		this.cardTypeID = cardTypeID;
-	}
-
-
-
-	public Card(String cardMacID, int cardName, String cardIsLive,
-			String cardRegisterTime, int cardTypeID) {
-		super();
-		this.cardMacID = cardMacID;
-		this.cardName = cardName;
-		this.cardIsLive = cardIsLive;
-		this.cardRegisterTime = cardRegisterTime;
-		this.cardTypeID = cardTypeID;
-	}
 
 	
-
 	
-
-
-	public Card(String cardMacID, int cardName, String cardIsLive,
-			String cardRegisterTime, int cardTypeID, int orgID) {
+	public Card(String cardMacID, Integer cardName, String cardIsLive,
+			String cardRegisterTime, Integer cardTypeID, String orgID) {
 		super();
 		this.cardMacID = cardMacID;
 		this.cardName = cardName;
@@ -57,41 +31,52 @@ public class Card {
 	public String getCardMacID() {
 		return cardMacID;
 	}
+
 	public void setCardMacID(String cardMacID) {
 		this.cardMacID = cardMacID;
 	}
-	public int getCardName() {
+
+	public Integer getCardName() {
 		return cardName;
 	}
-	public void setCardName(int cardName) {
+
+	public void setCardName(Integer cardName) {
 		this.cardName = cardName;
 	}
+
 	public String getCardIsLive() {
 		return cardIsLive;
 	}
+
 	public void setCardIsLive(String cardIsLive) {
 		this.cardIsLive = cardIsLive;
 	}
+
 	public String getCardRegisterTime() {
 		return cardRegisterTime;
 	}
+
 	public void setCardRegisterTime(String cardRegisterTime) {
 		this.cardRegisterTime = cardRegisterTime;
 	}
-	public int getCardTypeID() {
+
+	public Integer getCardTypeID() {
 		return cardTypeID;
 	}
-	public void setCardTypeID(int cardTypeID) {
+
+	public void setCardTypeID(Integer cardTypeID) {
 		this.cardTypeID = cardTypeID;
 	}
 
-	public int getOrgID() {
+	public String getOrgID() {
 		return orgID;
 	}
-	
-	public void setOrgID(int orgID) {
+
+	public void setOrgID(String orgID) {
 		this.orgID = orgID;
 	}
+	
+	
 	
 	
 	

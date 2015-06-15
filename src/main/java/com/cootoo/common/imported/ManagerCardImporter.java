@@ -42,12 +42,12 @@ public class ManagerCardImporter extends ExcelUtil<ManagerCard> {
 					String type = getStringCellValue(cell);
 					managerCard.setManagerType(type);
 				}else if(k==ORG_ID_COLUMN){
-					String orgID = getStringCellValue(cell);
-					Integer intOrgID = null;
-					if(orgID != null){
-						intOrgID = Integer.parseInt(orgID);
-					}
-					managerCard.setOrgID(intOrgID);
+//					String orgID = getStringCellValue(cell);
+//					Integer intOrgID = null;
+//					if(orgID != null){
+//						intOrgID = Integer.parseInt(orgID);
+//					}
+					//managerCard.setOrgID(intOrgID);
 				}
 		}
 		

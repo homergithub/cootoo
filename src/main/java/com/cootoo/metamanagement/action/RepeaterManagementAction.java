@@ -18,6 +18,7 @@ import com.cootoo.common.util.DateUtil;
 import com.cootoo.metamanagement.domain.Repeater;
 import com.cootoo.metamanagement.service.RepeaterManagementService;
 
+@RequestMapping(value="/repeaterManagement/")
 @Controller
 public class RepeaterManagementAction{
 

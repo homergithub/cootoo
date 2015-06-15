@@ -18,6 +18,7 @@ import com.cootoo.common.util.DateUtil;
 import com.cootoo.metamanagement.domain.Lock;
 import com.cootoo.metamanagement.service.LockManagementService;
 
+@RequestMapping(value="/lockManagement/")
 @Controller
 public class LockManagementAction{
 

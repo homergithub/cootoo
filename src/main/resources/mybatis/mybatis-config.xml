@@ -13,7 +13,8 @@
 		
     <mappers>  
     	<!-- 基础数据管理模块 -->
-    	<mapper resource="mybatis/mapper/metaManagement/cardManagement.xml"/> 
+    	<mapper resource="mybatis/mapper/metaManagement/cardManagement.xml"/>
+    	<mapper resource="mybatis/mapper/metaManagement/mgrCardManagement.xml"/>  
         <mapper resource="mybatis/mapper/metaManagement/departManagement.xml"/>   
         <mapper resource="mybatis/mapper/metaManagement/lockManagement.xml"/>  
         <mapper resource="mybatis/mapper/metaManagement/peopleManagement.xml"/>  

@@ -4,7 +4,6 @@ package com.cootoo.metamanagement.action;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.Date;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,9 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import com.cootoo.common.util.DateUtil;
 import com.cootoo.common.util.DownLoadUtil;
-import com.cootoo.metamanagement.domain.Card;
 import com.cootoo.metamanagement.domain.Organization;
 import com.cootoo.metamanagement.service.MetaManagementService;
 /**
@@ -398,34 +395,34 @@ public class MetaManagementAction {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value="addCard",method=RequestMethod.POST)
-	@ResponseBody
-	public Map<String,Object> addCard(HttpServletRequest request){
-		
-		String cardMacID = request.getParameter("cardMacID");
-		String cardNameStr = request.getParameter("cardName");
-		Integer cardName = null;
-		if(null != cardNameStr){
-			cardName = Integer.parseInt(cardNameStr);
-		}
-
-		String cardIsLive = request.getParameter("cardIsLive");
-		String cardTypeIDStr = request.getParameter("cardTypeID");
-		Integer cardTypeID = null;
-		if(null != cardTypeIDStr){
-			cardTypeID = Integer.parseInt(cardTypeIDStr);
-		}
-				
-		
-		String cardRegisterTime = DateUtil.dateFormat(new Date(), "yyyy-MM-dd HH:mm:ss");
-		//此处获取orgID
-		
-		Card card = new Card(cardMacID,cardName,cardIsLive,cardRegisterTime,cardTypeID,1);
-		Map<String, Object> result = metaManagementServiceImpl.addCard(card);
-		return result;
-		
-	}
-	
+//	@RequestMapping(value="addCard",method=RequestMethod.POST)
+//	@ResponseBody
+//	public Map<String,Object> addCard(HttpServletRequest request){
+//		
+//		String cardMacID = request.getParameter("cardMacID");
+//		String cardNameStr = request.getParameter("cardName");
+//		Integer cardName = null;
+//		if(null != cardNameStr){
+//			cardName = Integer.parseInt(cardNameStr);
+//		}
+//
+//		String cardIsLive = request.getParameter("cardIsLive");
+//		String cardTypeIDStr = request.getParameter("cardTypeID");
+//		Integer cardTypeID = null;
+//		if(null != cardTypeIDStr){
+//			cardTypeID = Integer.parseInt(cardTypeIDStr);
+//		}
+//				
+//		
+//		String cardRegisterTime = DateUtil.dateFormat(new Date(), "yyyy-MM-dd HH:mm:ss");
+//		//此处获取orgID
+//		
+//		Card card = new Card(cardMacID,cardName,cardIsLive,cardRegisterTime,cardTypeID,1);
+//		Map<String, Object> result = metaManagementServiceImpl.addCard(card);
+//		return result;
+//		
+//	}
+//	
 	
 	/**
 	 * 通过单位编号获取所有门卡
@@ -459,27 +456,27 @@ public class MetaManagementAction {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value="updateCard",method=RequestMethod.POST)
-	@ResponseBody
-	public Map<String,Object> updateCard(HttpServletRequest request){
-		
-		String cardMacID = request.getParameter("cardMacID");
-		String cardNameStr = request.getParameter("cardName");
-		Integer cardName = null;
-		if(null != cardNameStr){
-			cardName = Integer.parseInt(cardNameStr);
-		}
-		String cardIsLive = request.getParameter("cardIsLive");
-		String cardTypeIDStr = request.getParameter("cardTypeID");
-		Integer cardTypeID = null;
-		if(null != cardTypeIDStr){
-			cardTypeID = Integer.parseInt(cardTypeIDStr);
-		}
-		
-		Card card = new Card(cardMacID, cardName, cardIsLive, cardTypeID);
-		Map<String, Object> result = metaManagementServiceImpl.updateCard(card);
-		return result;
-	}
+//	@RequestMapping(value="updateCard",method=RequestMethod.POST)
+//	@ResponseBody
+//	public Map<String,Object> updateCard(HttpServletRequest request){
+//		
+//		String cardMacID = request.getParameter("cardMacID");
+//		String cardNameStr = request.getParameter("cardName");
+//		Integer cardName = null;
+//		if(null != cardNameStr){
+//			cardName = Integer.parseInt(cardNameStr);
+//		}
+//		String cardIsLive = request.getParameter("cardIsLive");
+//		String cardTypeIDStr = request.getParameter("cardTypeID");
+//		Integer cardTypeID = null;
+//		if(null != cardTypeIDStr){
+//			cardTypeID = Integer.parseInt(cardTypeIDStr);
+//		}
+//		
+//		Card card = new Card(cardMacID, cardName, cardIsLive, cardTypeID);
+//		Map<String, Object> result = metaManagementServiceImpl.updateCard(card);
+//		return result;
+//	}
 	
 	
 	/**

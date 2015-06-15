@@ -5,8 +5,22 @@ public class ManagerCard {
 	private String managerCardID;
 	private String managerCardName;
 	private String managerType;
-	private Integer orgID;
+	private String orgID;
 	
+
+	public ManagerCard() {
+		super();
+	}
+		
+	public ManagerCard(String managerCardID, String managerCardName,
+			String managerType, String orgID) {
+		super();
+		this.managerCardID = managerCardID;
+		this.managerCardName = managerCardName;
+		this.managerType = managerType;
+		this.orgID = orgID;
+	}
+
 	public String getManagerCardID() {
 		return managerCardID;
 	}
@@ -25,12 +39,11 @@ public class ManagerCard {
 	public void setManagerType(String managerType) {
 		this.managerType = managerType;
 	}
-	public Integer getOrgID() {
+	public String getOrgID() {
 		return orgID;
 	}
-	public void setOrgID(Integer orgID) {
+	public void setOrgID(String orgID) {
 		this.orgID = orgID;
-	}
-	
+	}	
 	
 }

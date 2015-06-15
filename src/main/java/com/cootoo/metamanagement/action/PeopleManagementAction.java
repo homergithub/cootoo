@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.cootoo.metamanagement.domain.People;
 import com.cootoo.metamanagement.service.PeopleManagementService;
 
+@RequestMapping(value="/peopleManagement/")
 @Controller
 public class PeopleManagementAction{
 
