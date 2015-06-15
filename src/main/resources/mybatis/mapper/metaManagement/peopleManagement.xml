@@ -6,7 +6,47 @@
 	
 	<cache eviction="FIFO" flushInterval="60000" size="1024" readOnly="true"/>
 
-   
+	<!-- 住户信息添加 -->
+    <insert id="insertPeople" parameterType="list">
+		insert into ${db_conn}.tPeople(peopleID,
+									   peopleName,
+									   peopleTypeID,
+									   peopleSignID,
+									   peopleTel,
+									   departmentID,
+									   mark,
+									   isAllocated,
+									   sex,
+									   isInSchool
+									  )values
+		<foreach collection="list" item="item" separator=",">
+			(#{item.peopleID},#{item.peopleName},#{item.peopleTypeID},#{item.peopleSignID},#{item.peopleTel},#{item.departmentID},#{item.mark},#{item.isAllocated},#{item.sex},#{item.isInSchool})
+		</foreach>							      
+	</insert>
+	
+	<!-- 住户信息删除 -->
+	<delete id="deletePeople" parameterType="list">
+		delete from ${db_conn}.tPeople where peopleID in 
+		(
+			<foreach collection="list" item="item" separator=",">
+				#{item}
+			</foreach>
+		)
+	</delete>
+	
+	<!-- 修改住户信息 -->
+	<update id="updatePeople" parameterType="com.cootoo.metamanagement.domain.People">
+		update ${db_conn}.tPeople set peopleName = #{peopleName},
+									  peopleTypeID = #{peopleTypeID},
+									  peopleSignID = #{peopleSignID},
+									  peopleTel = #{peopleTel},
+									  departmentID = #{departmentID}
+									  mark = #{mark},
+									  isAllocated = #{isAllocated},
+									  sex = #{sex},
+									  isInSchool = #{isInSchool}
+		where peopleID = #{peopleID}	
+	</update>
 
 	
 </mapper>

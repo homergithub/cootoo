@@ -6,6 +6,7 @@
 	
 	<cache eviction="FIFO" flushInterval="60000" size="1024" readOnly="true"/>
 
+	<!-- 部门信息添加 -->
     <insert id="insertDepartment" parameterType="list">
 		insert into ${db_conn}.tDepartment(departmentID,
 										   departmentName,
@@ -20,5 +21,25 @@
 		</foreach>
 	</insert>
 
+	<!--部门批量删除 -->
+	<delete id="deleteDepartment" parameterType="list">
+		delete from ${db_conn}.tDepartment where departmentID in 
+		(
+			<foreach collection="list" item="item" separator=",">
+				#{item.departmentID}
+			</foreach>
+		)
+	</delete>
+		
+	<!-- 修改部门信息 -->
+	<update id="updateDepartment" parameterType="com.cootoo.metamanagement.domain.Department">
+		update ${db_conn}.tDepartment set departmentName=#{departmentName},
+											departmentType=#{departmentType},
+											departmentPosition = #{departmentPosition},
+											departmentDescription = #{departmentDescription},
+											orgID = #{orgID}
+		where departmentID = #{departmentID}
+	</update>
+	
 	
 </mapper>

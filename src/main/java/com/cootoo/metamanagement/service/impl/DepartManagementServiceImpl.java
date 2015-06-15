@@ -20,6 +20,8 @@ public class DepartManagementServiceImpl implements DepartManagementService {
 	
 	private final String INSERT_SUCCESS="添加部门成功!";
 	
+	private final String MODIFY_SUCCESS="修改部门成功!";
+	
 	@Override
 	public Map<String,Object> addDepartment(List<Department> departList) {
 		
@@ -28,5 +30,32 @@ public class DepartManagementServiceImpl implements DepartManagementService {
 		result.put("msg", INSERT_SUCCESS);
 		return result; 
 		
+	}
+
+	@Override
+	public Map<String, Object> deleteDepartment(List<String> departIDList) {
+		
+		Map<String,Object> result = new HashMap<String, Object>();	
+		int rows = departManagementDaoImpl.deleteDepartment(departIDList);
+		result.put("msg", getDeleteMsg(rows));
+		return result; 
+	}
+	
+	
+	@Override
+	public Map<String, Object> modifyDepartment(Department department) {
+		
+		Map<String,Object> result = new HashMap<String, Object>();	
+		departManagementDaoImpl.updateDepartment(department);
+		result.put("msg", MODIFY_SUCCESS);
+		return result; 
+	}
+	
+	
+	
+	
+	
+	private final String getDeleteMsg(int rows){
+		return "删除" + rows + "条部门信息";
 	}
 }

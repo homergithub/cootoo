@@ -89,7 +89,7 @@ public class PeopleImporter extends ExcelUtil<People> {
 					people.setIsAllocated(isAllocated);
 				}else if(k==PEOPLE_MARK_COLUMN){
 					String userMark = getStringCellValue(cell);
-					people.setUserMark(userMark);
+					//people.setUserMark(userMark);
 				}
 			}
 

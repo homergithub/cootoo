@@ -41,6 +41,7 @@
   	<urlrewrite-version>2.5.2</urlrewrite-version>
   	<shiro-version>1.2.3</shiro-version>
   	<quartz-all-version>1.6.1</quartz-all-version>
+  	<quartz-version>2.2.1</quartz-version>
   </properties>
   
   <dependencies>
@@ -286,7 +287,11 @@
 	  <artifactId>quartz-all</artifactId>
 	  <version>${quartz-all-version}</version>
 	</dependency>
-	
+	<dependency>
+	  <groupId>org.quartz-scheduler</groupId>
+	  <artifactId>quartz</artifactId>
+	  <version>${quartz-version}</version>
+	</dependency>
   </dependencies>
   
   <build>

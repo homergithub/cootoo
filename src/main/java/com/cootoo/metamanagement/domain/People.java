@@ -9,7 +9,7 @@ public class People {
 	private Integer peopleTypeID;
 	private Integer peopleSignID;
 	private String departmentID;
-	private String userMark;
+	private String mark;
 	private String isAllocated;
 	private String isInSchool;
 	
@@ -17,13 +17,10 @@ public class People {
 		super();
 	}
 		
-	
-
-	
-
 	public People(String peopleID, String peopleName, String sex,
 			String peopleTel, Integer peopleTypeID, Integer peopleSignID,
-			String departmentID, String userMark, String isAllocated) {
+			String departmentID, String mark, String isAllocated,
+			String isInSchool) {
 		super();
 		this.peopleID = peopleID;
 		this.peopleName = peopleName;
@@ -32,9 +29,11 @@ public class People {
 		this.peopleTypeID = peopleTypeID;
 		this.peopleSignID = peopleSignID;
 		this.departmentID = departmentID;
-		this.userMark = userMark;
+		this.mark = mark;
 		this.isAllocated = isAllocated;
+		this.isInSchool = isInSchool;
 	}
+
 
 
 
@@ -118,16 +117,23 @@ public class People {
 
 
 
-	public String getUserMark() {
-		return userMark;
+	
+
+
+	public String getMark() {
+		return mark;
 	}
 
 
 
 
-	public void setUserMark(String userMark) {
-		this.userMark = userMark;
+
+
+	public void setMark(String mark) {
+		this.mark = mark;
 	}
+
+
 
 
 
@@ -173,13 +179,5 @@ public class People {
 
 
 
-
-
-	@Override
-	public String toString() {
-		return "People [peopleID=" + peopleID + ", peopleName=" + peopleName
-				+ ", sex=" + sex + ", peopleTel=" + peopleTel + "]";
-	}
-	
 	
 }

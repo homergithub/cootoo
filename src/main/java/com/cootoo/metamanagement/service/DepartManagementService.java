@@ -8,4 +8,8 @@ import com.cootoo.metamanagement.domain.Department;
 public interface DepartManagementService {
 
 	Map<String,Object> addDepartment(List<Department> departList);
+	
+	Map<String,Object> deleteDepartment(List<String> departIDList);
+	
+	Map<String,Object> modifyDepartment(Department department);
 }
