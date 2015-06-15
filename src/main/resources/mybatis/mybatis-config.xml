@@ -20,6 +20,7 @@
         <mapper resource="mybatis/mapper/metaManagement/peopleManagement.xml"/>  
     	<mapper resource="mybatis/mapper/metaManagement/repeaterManagement.xml"/> 
         <mapper resource="mybatis/mapper/metaManagement/unitLocationManagement.xml"/>   
+        <mapper resource="mybatis/mapper/metaManagement/frontMachineManagement.xml"/>
        
     
     	<!-- 测试 -->
