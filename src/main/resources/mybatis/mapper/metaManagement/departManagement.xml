@@ -26,7 +26,7 @@
 		delete from ${db_conn}.tDepartment where departmentID in 
 		(
 			<foreach collection="list" item="item" separator=",">
-				#{item.departmentID}
+				#{item}
 			</foreach>
 		)
 	</delete>
@@ -34,6 +34,7 @@
 	<!-- 修改部门信息 -->
 	<update id="updateDepartment" parameterType="com.cootoo.metamanagement.domain.Department">
 		update ${db_conn}.tDepartment set departmentName=#{departmentName},
+											departmentPID = #{departmentPID},
 											departmentType=#{departmentType},
 											departmentPosition = #{departmentPosition},
 											departmentDescription = #{departmentDescription},

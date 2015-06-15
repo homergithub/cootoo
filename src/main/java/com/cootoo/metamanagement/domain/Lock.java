@@ -9,15 +9,19 @@ public class Lock {
 	private String isLive;
 	private String repeaterID;
 	private String updateTime;
-	private String unitName;
-	private String repeaterName;
+	private String activeTime;
+	private Integer battery;
+	private String signal;
 	
 	public Lock() {
 		super();
 	}
 	
+	
+	
 	public Lock(String lockMacID, String lockName, String locationID,
-			String isLive, String repeaterID, String updateTime) {
+			String isLive, String repeaterID, String updateTime,
+			String activeTime, Integer battery, String signal) {
 		super();
 		this.lockMacID = lockMacID;
 		this.lockName = lockName;
@@ -25,7 +29,12 @@ public class Lock {
 		this.isLive = isLive;
 		this.repeaterID = repeaterID;
 		this.updateTime = updateTime;
+		this.activeTime = activeTime;
+		this.battery = battery;
+		this.signal = signal;
 	}
+
+
 
 	public String getLockMacID() {
 		return lockMacID;
@@ -57,30 +66,31 @@ public class Lock {
 	public void setRepeaterID(String repeaterID) {
 		this.repeaterID = repeaterID;
 	}
-
 	public String getUpdateTime() {
 		return updateTime;
 	}
-
 	public void setUpdateTime(String updateTime) {
 		this.updateTime = updateTime;
 	}
-
-	public String getUnitName() {
-		return unitName;
+	public String getActiveTime() {
+		return activeTime;
+	}
+	public void setActiveTime(String activeTime) {
+		this.activeTime = activeTime;
+	}
+	public Integer getBattery() {
+		return battery;
+	}
+	public void setBattery(Integer battery) {
+		this.battery = battery;
+	}
+	public String getSignal() {
+		return signal;
+	}
+	public void setSignal(String signal) {
+		this.signal = signal;
 	}
 
-	public void setUnitName(String unitName) {
-		this.unitName = unitName;
-	}
-
-	public String getRepeaterName() {
-		return repeaterName;
-	}
-
-	public void setRepeaterName(String repeaterName) {
-		this.repeaterName = repeaterName;
-	}
 
 	
 	

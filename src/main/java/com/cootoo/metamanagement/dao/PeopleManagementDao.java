@@ -1,6 +1,7 @@
 package com.cootoo.metamanagement.dao;
 
 import java.util.List;
+
 import com.cootoo.metamanagement.domain.People;
 
 public interface PeopleManagementDao {

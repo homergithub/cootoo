@@ -22,9 +22,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.cootoo.common.util.DateUtil;
 import com.cootoo.common.util.DownLoadUtil;
 import com.cootoo.metamanagement.domain.Card;
-import com.cootoo.metamanagement.domain.Lock;
 import com.cootoo.metamanagement.domain.Organization;
-import com.cootoo.metamanagement.domain.Repeater;
 import com.cootoo.metamanagement.service.MetaManagementService;
 /**
  * @description 元数据管理模块控制层 
@@ -188,20 +186,20 @@ public class MetaManagementAction {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value="addRepeater",method=RequestMethod.POST)
-	@ResponseBody
-	public Map<String,Object> addRepeater(HttpServletRequest request){
-		
-		String repeaterID = request.getParameter("repeaterID");
-		String repeaterName = request.getParameter("repeaterName");
-		String repeaterIP = request.getParameter("repeaterIP");
-		String locationID =  request.getParameter("locationID");
-		
-		Repeater repeater = new Repeater(repeaterID, repeaterName, repeaterIP, locationID);
-		Map<String, Object> result = metaManagementServiceImpl.addRepeater(repeater); 
-		return result;
-		
-	}
+//	@RequestMapping(value="addRepeater",method=RequestMethod.POST)
+//	@ResponseBody
+//	public Map<String,Object> addRepeater(HttpServletRequest request){
+//		
+//		String repeaterID = request.getParameter("repeaterID");
+//		String repeaterName = request.getParameter("repeaterName");
+//		String repeaterIP = request.getParameter("repeaterIP");
+//		String locationID =  request.getParameter("locationID");
+//		
+//		Repeater repeater = new Repeater(repeaterID, repeaterName, repeaterIP, locationID);
+//		Map<String, Object> result = metaManagementServiceImpl.addRepeater(repeater); 
+//		return result;
+//		
+//	}
 	
 	/**
 	 * 通过单位编号获取所有中继器
@@ -259,20 +257,20 @@ public class MetaManagementAction {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value="updateRepeater",method=RequestMethod.POST)
-	@ResponseBody
-	public Map<String,Object> updateRepeater(HttpServletRequest request){
-		
-		String repeaterID = request.getParameter("repeaterID");
-		String repeaterName = request.getParameter("repeaterName");
-		String repeaterIP = request.getParameter("repeaterIP");
-		String locationID = request.getParameter("locationID");
-		Repeater repeater = new Repeater(repeaterID, repeaterName, repeaterIP,locationID);
-
-		Map<String, Object> result = metaManagementServiceImpl.updateRepeater(repeater);
-		
-		return result;
-	}
+//	@RequestMapping(value="updateRepeater",method=RequestMethod.POST)
+//	@ResponseBody
+//	public Map<String,Object> updateRepeater(HttpServletRequest request){
+//		
+//		String repeaterID = request.getParameter("repeaterID");
+//		String repeaterName = request.getParameter("repeaterName");
+//		String repeaterIP = request.getParameter("repeaterIP");
+//		String locationID = request.getParameter("locationID");
+//		Repeater repeater = new Repeater(repeaterID, repeaterName, repeaterIP,locationID);
+//
+//		Map<String, Object> result = metaManagementServiceImpl.updateRepeater(repeater);
+//		
+//		return result;
+//	}
 	
 	/**
 	 * 删除中继器
@@ -328,45 +326,45 @@ public class MetaManagementAction {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value="addLock",method=RequestMethod.POST)
-	@ResponseBody
-	public Map<String,Object> addLock(HttpServletRequest request){
-		
-		String lockMacID = request.getParameter("lockMacID");
-		String lockName = request.getParameter("lockName");
-		String locationID = request.getParameter("locationID");
-		String isLive = request.getParameter("isLive");
-		String repeaterID = request.getParameter("repeaterID");
-		String time = DateUtil.dateFormat(new Date(), "yyyy-MM-dd HH:mm:ss");
-		Lock lock = new Lock(lockMacID,lockName,locationID,isLive,repeaterID,time);
-		
-		Map<String, Object> result = metaManagementServiceImpl.addLock(lock);
-		return result;
-	}
-	
+//	@RequestMapping(value="addLock",method=RequestMethod.POST)
+//	@ResponseBody
+//	public Map<String,Object> addLock(HttpServletRequest request){
+//		
+//		String lockMacID = request.getParameter("lockMacID");
+//		String lockName = request.getParameter("lockName");
+//		String locationID = request.getParameter("locationID");
+//		String isLive = request.getParameter("isLive");
+//		String repeaterID = request.getParameter("repeaterID");
+//		String time = DateUtil.dateFormat(new Date(), "yyyy-MM-dd HH:mm:ss");
+//		//Lock lock = new Lock(lockMacID,lockName,locationID,isLive,repeaterID,time);
+//		
+//		//Map<String, Object> result = metaManagementServiceImpl.addLock(lock);
+//		return null;
+//	}
+//	
 	/**
 	 * 更新锁
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value="updateLock",method=RequestMethod.POST)
-	@ResponseBody
-	public Map<String,Object> updateLock(HttpServletRequest request){
-		
-		String lockMacID = request.getParameter("lockMacID");
-		String lockName = request.getParameter("lockName");
-		String locationID = request.getParameter("locationID");
-		String isLive = request.getParameter("isLive");
-		String repeaterID = request.getParameter("repeaterID");
-		String updateTime = DateUtil.dateFormat(new Date(), "yyyy-MM-dd HH:mm:ss");
-		
-		Lock lock = new Lock(lockMacID, lockName, locationID, isLive, repeaterID, updateTime);
-		Map<String, Object> result = metaManagementServiceImpl.updateLock(lock);
-		
-		return result;
-		
-		
-	}
+//	@RequestMapping(value="updateLock",method=RequestMethod.POST)
+//	@ResponseBody
+//	public Map<String,Object> updateLock(HttpServletRequest request){
+//		
+//		String lockMacID = request.getParameter("lockMacID");
+//		String lockName = request.getParameter("lockName");
+//		String locationID = request.getParameter("locationID");
+//		String isLive = request.getParameter("isLive");
+//		String repeaterID = request.getParameter("repeaterID");
+//		String updateTime = DateUtil.dateFormat(new Date(), "yyyy-MM-dd HH:mm:ss");
+//		
+//		//Lock lock = new Lock(lockMacID, lockName, locationID, isLive, repeaterID, updateTime);
+//		//Map<String, Object> result = metaManagementServiceImpl.updateLock(lock);
+//		
+//		return null;
+//		
+//		
+//	}
 	
 	/**
 	 * 删除锁

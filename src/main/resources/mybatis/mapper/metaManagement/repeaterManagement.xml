@@ -6,7 +6,34 @@
 	
 	<cache eviction="FIFO" flushInterval="60000" size="1024" readOnly="true"/> 
 	
+	<!-- 添加中继 -->
+	<insert id="insertRepeater" parameterType="list">
+		insert into ${db_conn}.tRepeater(repeaterID,
+										 repeaterName,
+										 repeaterIP,
+										 locationID,
+										 updateTime
+										 )values
+		<foreach collection="list" item="item" separator=",">
+		 	(#{item.repeaterID},#{item.repeaterName},#{item.repeaterIP},#{item.locationID},#{item.updateTime})
+		</foreach>
+	</insert>
 	
+	<!-- 删除中继 -->
+	<delete id="deleteRepeater" parameterType="list">
+		delete from ${db_conn}.tRepeater where repeaterID in
+		(
+			<foreach collection="list" item="item" separator=",">
+				#{item}
+			</foreach>
+		)
+	</delete>
 	
+	<!-- 修改中继 -->
+	<update id="updateRepeater" parameterType="com.cootoo.metamanagement.domain.Repeater">
+		update ${db_conn}.tRepeater set repeaterName = #{repeaterName},repeaterIP = #{repeaterIP},
+		locationID = #{locationID},updateTime = #{updateTime}	
+		where repeaterID = #{repeaterID}
+	</update>
 	
 </mapper>

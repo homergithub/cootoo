@@ -47,14 +47,13 @@ public class DepartManagementAction{
 		
 	}
 	
-	
-	
+
 	@RequestMapping(value="deleteDepartment",method=RequestMethod.POST)
 	@ResponseBody
 	public Map<String,Object> deleteDepartment(HttpServletRequest request){
 		
-		String strdepartmentIDs = request.getParameter("departmentIDs");
-		List<String> departIDList = Arrays.asList(strdepartmentIDs.split(","));
+		String strDepartmentIDs = request.getParameter("departmentIDs");
+		List<String> departIDList = Arrays.asList(strDepartmentIDs.split(","));
 		Map<String, Object> result = departManagementServiceImpl.deleteDepartment(departIDList);
 		return result;
 			
@@ -67,6 +66,7 @@ public class DepartManagementAction{
 		
 		String departmentID = request.getParameter("departmentID");
 		String departmentName = request.getParameter("departmentName");
+		String departmentPID = request.getParameter("departmentPID");
 		String strDepartmentType = request.getParameter("departmentType");
 		Integer departmentType = null;
 		if(null != strDepartmentType && !"".equals(strDepartmentType)){
@@ -76,7 +76,7 @@ public class DepartManagementAction{
 		String departmentDescription = request.getParameter("departmentDescription");
 		String orgID = request.getParameter("orgID");
 		
-		Department department = new Department(departmentID, departmentName, null, departmentType, departmentPosition, departmentDescription, orgID);
+		Department department = new Department(departmentID, departmentName, departmentPID, departmentType, departmentPosition, departmentDescription, orgID);
 		Map<String, Object> result = departManagementServiceImpl.modifyDepartment(department);
 		return result;
 		
