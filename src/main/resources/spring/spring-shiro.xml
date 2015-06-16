@@ -38,6 +38,7 @@
         /logon/login.do=anon
         /ui/**=anon
         /page/home.jsp=authc
+        /page/school.jsp=authc
         /home.html=authc
         /menuManagement/**=authc 
         /metaManagement/**=authc 
