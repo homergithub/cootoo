@@ -12,6 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.cootoo.metamanagement.domain.People;
 import com.cootoo.metamanagement.service.PeopleManagementService;
@@ -57,6 +59,19 @@ public class PeopleManagementAction{
 		return result;
 				
 	}
+	
+	
+	@RequestMapping(value="importPeople",method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String,Object> importPeople(HttpServletRequest request){
+
+		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+		MultipartFile file = multipartRequest.getFile("file");
+	
+		Map<String, Object> result = peopleManagementServiceImpl.addPeople(file);	
+		return result;
+
+	 }
 	
 	
 	@RequestMapping(value="deletePeople",method=RequestMethod.POST)

@@ -4,6 +4,8 @@ import java.util.List;
 
 public class LoginRole {
 
+	private Integer loginID;
+	private String orgID;
 	private String loginAccount;
 	private Integer roleID;
 	private String roleName;
@@ -49,6 +51,22 @@ public class LoginRole {
 
 	public void setRoleID(Integer roleID) {
 		this.roleID = roleID;
+	}
+
+	public Integer getLoginID() {
+		return loginID;
+	}
+
+	public void setLoginID(Integer loginID) {
+		this.loginID = loginID;
+	}
+
+	public String getOrgID() {
+		return orgID;
+	}
+
+	public void setOrgID(String orgID) {
+		this.orgID = orgID;
 	}
 	
 	

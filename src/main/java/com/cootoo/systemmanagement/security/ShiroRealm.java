@@ -1,5 +1,7 @@
 package com.cootoo.systemmanagement.security;
 
+import java.util.Map;
+
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -7,6 +9,7 @@ import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
@@ -25,16 +28,17 @@ public class ShiroRealm extends AuthorizingRealm {
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
 		
-//		String loginName = (String) principals.fromRealm(getName()).iterator().next();
-//		
-//		if(loginName.equals("zhuhong")){
-//			SimpleAuthorizationInfo info = new SimpleAuthorizationInfo(); 
-//			info.addRole("admin");
-//			return info;
-//		}		
-		
-		return null;
-		
+		String loginName = (String) principals.fromRealm(getName()).iterator().next();
+		if(null != loginName){
+			SimpleAuthorizationInfo info = new SimpleAuthorizationInfo(); 
+			Map<String, Object> role = systemManagementDaoImpl.selectLoginRole(loginName);
+			String roleCode = (String) role.get("roleCode");
+			info.addRole(roleCode);
+			return info;
+		}else{
+			return null;
+		}
+	
 	}
 
 	@Override

@@ -34,50 +34,43 @@ public class DepartmentImporter extends ExcelUtil<Department> {
 			//获取单元格
 			Cell cell = row.getCell(k);
 		
-				if(k==DEPARTMENT_ID_COLUMN){
-					String departID = getStringCellValue(cell);
-					depart.setDepartmentID(departID);
-				}else if(k==DEPARTMENT_NAME_COLUMN){
-					String departName = getStringCellValue(cell);
-					depart.setDepartmentName(departName);
-				}else if(k==DEPARTMENT_PID_COLUMN){
-					String departPID = getStringCellValue(cell);
-					depart.setDepartmentPID(departPID);
-				}else if(k==DEPARTMENT_TYPE_COLUMN){
-					String departType = getStringCellValue(cell);
-					Integer intDartType = null;
-					if(departType!=null){
-						intDartType = Integer.parseInt(departType);
-					}
-					depart.setDepartmentType(intDartType);
-				}else if(k==DEPARTMENT_POSITION_COLUMN){
-					String departPos = getStringCellValue(cell);
-					depart.setDepartmentPosition(departPos);
-				}else if(k==DEPARTMENT_DESCRIPTION_COLUMN){
-					String departDesc = getStringCellValue(cell);
-					depart.setDepartmentDescription(departDesc);
-				}else if(k==ORG_ID_COLUMN){
-					String orgID = getStringCellValue(cell);
-					//Integer intOrgID = null;
-					if(orgID != null){
-						//intOrgID = Integer.parseInt(orgID);
-					}
-					//depart.setOrgID(intOrgID);
+			if(k==DEPARTMENT_ID_COLUMN){
+				String departID = getStringCellValue(cell);
+				depart.setDepartmentID(departID);
+			}else if(k==DEPARTMENT_NAME_COLUMN){
+				String departName = getStringCellValue(cell);
+				depart.setDepartmentName(departName);
+			}else if(k==DEPARTMENT_PID_COLUMN){
+				String departPID = getStringCellValue(cell);
+				depart.setDepartmentPID(departPID);
+			}else if(k==DEPARTMENT_TYPE_COLUMN){
+				String departType = getStringCellValue(cell);
+				Integer intDartType = null;
+				if(departType!=null){
+					intDartType = Integer.parseInt(departType);
 				}
-			
-			
+				depart.setDepartmentType(intDartType);
+			}else if(k==DEPARTMENT_POSITION_COLUMN){
+				String departPos = getStringCellValue(cell);
+				depart.setDepartmentPosition(departPos);
+			}else if(k==DEPARTMENT_DESCRIPTION_COLUMN){
+				String departDesc = getStringCellValue(cell);
+				depart.setDepartmentDescription(departDesc);
+			}else if(k==ORG_ID_COLUMN){
+				String orgID = getStringCellValue(cell);			
+				depart.setOrgID(orgID);
+			}		
 
 		}	
 
-		return depart;
-		
+		return depart;	
 	}
 
 	@Override
 	protected List<Department> readRow(Sheet sheet) throws DataFormatException {
 		List<Department> departs = new ArrayList<Department>();
 		int numOfRows = sheet.getLastRowNum();
-		for (int j = BEGIN_DATA_ROW; j <=numOfRows; j++) {
+		for (int j = BEGIN_DATA_ROW; j <= numOfRows; j++) {
 			//获取行
 			Row row = sheet.getRow(j);
 			Department depart = readCell(row);

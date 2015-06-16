@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.cootoo.metamanagement.dao.CardManagementDao;
 import com.cootoo.metamanagement.domain.Card;
+import com.cootoo.metamanagement.domain.CardType;
 
 @Repository
 public class CardManagementDaoImpl implements CardManagementDao {
@@ -28,6 +29,11 @@ public class CardManagementDaoImpl implements CardManagementDao {
 	@Override
 	public int updateCard(Card card) {
 		return sqlSessionTemplate.update("cardModule.updateCard", card);
+	}
+
+	@Override
+	public List<CardType> selectCardType() {
+		return sqlSessionTemplate.selectList("cardModule.selectCardType");
 	}
 	
 	

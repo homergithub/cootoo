@@ -24,7 +24,8 @@ public class PeopleImporter extends ExcelUtil<People> {
 	public static final int PEOPLE_SIGN_COLUMN = 5;
 	public static final int PEOPLE_DEPART_COLUMN = 6;
 	public static final int PEOPLE_IS_ALLOCATED_COLUMN = 7;
-	public static final int PEOPLE_MARK_COLUMN = 8;
+	public static final int PEOPLE_IS_INSCHOOL_COLUMN = 8;
+	public static final int PEOPLE_MARK_COLUMN = 9;
 	
 	
 	
@@ -52,46 +53,49 @@ public class PeopleImporter extends ExcelUtil<People> {
 			//获取单元格
 			Cell cell = row.getCell(k);
 			
-				if(k==PEOPLE_ID_COLUMN){
-					String peopleID = getStringCellValue(cell);
-					people.setPeopleID(peopleID);
-				}else if(k==PEOPLE_NAME_COLUMN){
-					String peopleName = getStringCellValue(cell);
-					people.setPeopleName(peopleName);
-				}else if(k==PEOPLE_SEX_COLUMN){
-					String sex = getStringCellValue(cell);
-					if(sex.equals("男")||sex.equals("女")){
-						throw new SexColumnFormatException();
-					}
-					people.setSex(sex);
-				}else if(k==PEOPLE_TEL_COLUMN){
-					String tel = getStringCellValue(cell);
-					people.setPeopleTel(tel);
-				}else if(k==PEOPLE_TYPE_COLUMN){
-					String typeStr = getStringCellValue(cell);
-					Integer intType = null;
-					if(typeStr!=null && !"".equals(typeStr)){
-						intType = Integer.parseInt(typeStr);
-					}
-					people.setUserTypeID(intType);
-				}else if(k==PEOPLE_SIGN_COLUMN){
-					String signStr = getStringCellValue(cell);
-					Integer intSign = null;
-					if(signStr!=null && !"".equals(signStr)){
-						intSign = Integer.parseInt(signStr);
-					}
-					people.setPeopleSignID(intSign);
-				}else if(k==PEOPLE_DEPART_COLUMN){
-					String depart = getStringCellValue(cell);
-					people.setDepartmentID(depart);
-				}else if(k==PEOPLE_IS_ALLOCATED_COLUMN){
-					String isAllocated = getStringCellValue(cell);
-					people.setIsAllocated(isAllocated);
-				}else if(k==PEOPLE_MARK_COLUMN){
-					//String userMark = getStringCellValue(cell);
-					//people.setUserMark(userMark);
+			if(k==PEOPLE_ID_COLUMN){
+				String peopleID = getStringCellValue(cell);
+				people.setPeopleID(peopleID);
+			}else if(k==PEOPLE_NAME_COLUMN){
+				String peopleName = getStringCellValue(cell);
+				people.setPeopleName(peopleName);
+			}else if(k==PEOPLE_SEX_COLUMN){
+				String sex = getStringCellValue(cell);
+				if(sex.equals("男")||sex.equals("女")){
+					throw new SexColumnFormatException();
 				}
+				people.setSex(sex);
+			}else if(k==PEOPLE_TEL_COLUMN){
+				String tel = getStringCellValue(cell);
+				people.setPeopleTel(tel);
+			}else if(k==PEOPLE_TYPE_COLUMN){
+				String typeStr = getStringCellValue(cell);
+				Integer intType = null;
+				if(typeStr!=null && !"".equals(typeStr)){
+					intType = Integer.parseInt(typeStr);
+				}
+				people.setUserTypeID(intType);
+			}else if(k==PEOPLE_SIGN_COLUMN){
+				String signStr = getStringCellValue(cell);
+				Integer intSign = null;
+				if(signStr!=null && !"".equals(signStr)){
+					intSign = Integer.parseInt(signStr);
+				}
+				people.setPeopleSignID(intSign);
+			}else if(k==PEOPLE_DEPART_COLUMN){
+				String depart = getStringCellValue(cell);
+				people.setDepartmentID(depart);
+			}else if(k==PEOPLE_IS_ALLOCATED_COLUMN){
+				String isAllocated = getStringCellValue(cell);
+				people.setIsAllocated(isAllocated);
+			}else if(k==PEOPLE_IS_INSCHOOL_COLUMN){
+				String isInSchool = getStringCellValue(cell);
+				people.setIsInSchool(isInSchool);
+			}else if(k==PEOPLE_MARK_COLUMN){
+				String mark = getStringCellValue(cell);
+				people.setMark(mark);
 			}
+		}
 
 		return people;
 	}

@@ -13,6 +13,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.cootoo.common.util.DateUtil;
 import com.cootoo.metamanagement.domain.Card;
@@ -49,6 +51,19 @@ public class CardManagementAction{
 		return result;
 	}
 	
+	
+	@RequestMapping(value="importCard",method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String,Object> importCard(HttpServletRequest request){
+
+		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+		MultipartFile file = multipartRequest.getFile("file");
+	
+		Map<String, Object> result = cardManagementServiceImpl.addCard(file);
+		return result;
+	 }
+	
+
 	@RequestMapping(value="deleteCard",method=RequestMethod.POST)
 	@ResponseBody
 	public Map<String,Object> deleteCard(HttpServletRequest request){
@@ -80,5 +95,16 @@ public class CardManagementAction{
 		Map<String, Object> result = cardManagementServiceImpl.modifyCard(card);
 		return result;
 	}
+	
+	
+	@RequestMapping(value="getCardType",method=RequestMethod.GET)
+	@ResponseBody
+	public Map<String,Object> getCardType(HttpServletRequest request){
+		Map<String, Object> result = cardManagementServiceImpl.getCardType();
+		return result;
+	}
+	
+	
+	
 	
 }

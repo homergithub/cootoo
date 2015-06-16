@@ -37,5 +37,28 @@
 		where cardMacID = #{cardMacID}
 	</update>
 	
+	<!-- 查询门卡类型 -->
+	<select id="selectCardType" resultType="com.cootoo.metamanagement.domain.CardType">
+		select * from ${db_conn}.tCardType 
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 </mapper>

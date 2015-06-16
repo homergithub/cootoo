@@ -32,35 +32,31 @@ public class CardImporter extends ExcelUtil<Card> {
 			//获取单元格
 			Cell cell = row.getCell(k);
 			
-				if(k==CARD_MAC_ID_COLUMN){
-					String cardMacID = getStringCellValue(cell);
-					card.setCardMacID(cardMacID);
-				}else if(k==CARD_NAME_COLUMN){
-					String cardName = getStringCellValue(cell);
-					Integer intCardName = null;
-					if(cardName!=null){
-						intCardName = Integer.parseInt(cardName);
-					}
-					card.setCardName(intCardName);
-				}else if(k==CARD_IS_LIVE_COLUMN){
-					String cardIsLive = getStringCellValue(cell);
-					card.setCardIsLive(cardIsLive);
-				}else if(k==CARD_TYPE_ID_COLUMN){
-					String cardTypeID = getStringCellValue(cell);
-					Integer intCardType = null;
-					if(cardTypeID != null){
-						intCardType = Integer.parseInt(cardTypeID);
-					}
-					card.setCardTypeID(intCardType);
-				}else if(k==ORG_ID_COLUMN){
-					//String orgID = getStringCellValue(cell);
-//					//Integer intOrgID = null;
-//					if(orgID != null){
-//						intOrgID = Integer.parseInt(orgID);
-//					}
-					//card.setOrgID(intOrgID);
+			if(k==CARD_MAC_ID_COLUMN){
+				String cardMacID = getStringCellValue(cell);
+				card.setCardMacID(cardMacID);
+			}else if(k==CARD_NAME_COLUMN){
+				String cardName = getStringCellValue(cell);
+				Integer intCardName = null;
+				if(cardName!=null){
+					intCardName = Integer.parseInt(cardName);
 				}
+				card.setCardName(intCardName);
+			}else if(k==CARD_IS_LIVE_COLUMN){
+				String cardIsLive = getStringCellValue(cell);
+				card.setCardIsLive(cardIsLive);
+			}else if(k==CARD_TYPE_ID_COLUMN){
+				String cardTypeID = getStringCellValue(cell);
+				Integer intCardType = null;
+				if(cardTypeID != null){
+					intCardType = Integer.parseInt(cardTypeID);
+				}
+				card.setCardTypeID(intCardType);
+			}else if(k==ORG_ID_COLUMN){
+				String orgID = getStringCellValue(cell);
+				card.setOrgID(orgID);
 			}
+		}
 			
 		return card;
 		
@@ -74,8 +70,8 @@ public class CardImporter extends ExcelUtil<Card> {
 		for (int j = BEGIN_DATA_ROW; j <= numOfRows; j++) {
 			//获取行
 			Row row = sheet.getRow(j);
-			Card people = readCell(row);
-			cards.add(people);
+			Card card = readCell(row);
+			cards.add(card);
 		}		
 		return cards;
 	}

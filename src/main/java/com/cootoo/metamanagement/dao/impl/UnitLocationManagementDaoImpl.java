@@ -1,6 +1,7 @@
 package com.cootoo.metamanagement.dao.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,26 @@ public class UnitLocationManagementDaoImpl implements UnitLocationManagementDao 
 	@Override
 	public int updateUnitLocation(UnitLocation unitLocation) {
 		return sqlSessionTemplate.update("unitLocationModule.updateUnitLocation", unitLocation);
+	}
+
+	@Override
+	public List<Map<String, Object>> selectSchoolAreaByLoginID(int loginID) {
+		return sqlSessionTemplate.selectList("unitLocationModule.selectSchoolAreaByLoginID", loginID);
+	}
+
+	@Override
+	public List<Map<String, Object>> selectBuildingByLoginID(int loginID) {
+		return sqlSessionTemplate.selectList("unitLocationModule.selectBuildingByLoginID", loginID);
+	}
+
+	@Override
+	public List<Map<String, Object>> selectFloorOrRoomByLocationID(String locationID) {
+		return sqlSessionTemplate.selectList("unitLocationModule.selectFloorORRoomByLocationID", locationID);
+	}
+
+	@Override
+	public int selectTreePathByOrgID(String orgID) {
+		return sqlSessionTemplate.selectOne("unitLocationModule.selectTreePathByOrgID", orgID);
 	}
 
 	

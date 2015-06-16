@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.cootoo.metamanagement.domain.FrontMachine;
 import com.cootoo.metamanagement.service.FrontMachineManagementService;
 
@@ -31,7 +32,7 @@ public class FrontMachineManagementAction {
 		String machineIP = request.getParameter("machineIP");
 		String machinePort = request.getParameter("machinePort");
 		String locationID = request.getParameter("locationID");
-		String isLive = request.getParameter("islive");
+		String isLive = request.getParameter("isLive");
 		String machineMark = request.getParameter("machineMark");
 		FrontMachine frontMachone = new FrontMachine(machineName, machineIP, machinePort, locationID, isLive, null, machineMark);
 		
@@ -61,7 +62,7 @@ public class FrontMachineManagementAction {
 		String machineIP = request.getParameter("machineIP");
 		String machinePort = request.getParameter("machinePort");
 		String locationID = request.getParameter("locationID");
-		String isLive = request.getParameter("islive");
+		String isLive = request.getParameter("isLive");
 		String machineMark = request.getParameter("machineMark");
 		FrontMachine frontMachine = new FrontMachine(machineName, machineIP, machinePort, locationID, isLive, null, machineMark);
 		Map<String, Object> result = frontMachineManagementServiceImpl.modifyFrontMachine(frontMachine);

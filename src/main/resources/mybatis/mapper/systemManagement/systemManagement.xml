@@ -8,6 +8,8 @@
 	
 	
 	<resultMap type="com.cootoo.systemmanagement.domain.LoginRole" id="UserRoleMap">
+		<result property="loginID" column="loginID"/>
+		<result property="orgID" column="orgID"/>
 		<result property="loginAccount" column="loginAccount"/>
 		<result property="roleID" column="roleID"/>
 		<result property="roleName" column="roleName"/>
@@ -37,7 +39,9 @@
 	</select>
 	
 	<select id="selectRoleFunctions" parameterType="int" resultMap="UserRoleMap">
-		select a.loginAccount,
+		select a.loginID,
+		a.orgID,
+		a.loginAccount,
 		f.orgName,
 		b.roleID,
 		b.roleName,
@@ -54,6 +58,16 @@
 		inner join ${db_conn}.tOrganization f on f.orgID = a.orgID
 		where a.loginID=#{loginID}
 	</select>
+	
+	
+	<select id="selectLoginRole" parameterType="int" resultType="hashmap">
+		select b.roleCode 
+		from tLogin a
+		inner join tRole b on a.roleID = b.roleID where a.loginAccount = #{loginAccount}
+	</select>
+	
+	
+	
 	
 	
 	<select id="selectAllRole" resultType="com.cootoo.systemmanagement.domain.Role">

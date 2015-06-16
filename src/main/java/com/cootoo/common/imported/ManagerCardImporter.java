@@ -32,23 +32,19 @@ public class ManagerCardImporter extends ExcelUtil<ManagerCard> {
 			//获取单元格
 			Cell cell = row.getCell(k);
 			
-				if(k==MANAGER_CARD_ID_COLUMN){
-					String cardID = getStringCellValue(cell);
-					managerCard.setManagerCardID(cardID);
-				}else if(k==MANAGER_CARD_NAME_COLUMN){
-					String cardName = getStringCellValue(cell);
-					managerCard.setManagerCardName(cardName);
-				}else if(k==MANAGER_TYPE_COLUMN){
-					String type = getStringCellValue(cell);
-					managerCard.setManagerType(type);
-				}else if(k==ORG_ID_COLUMN){
-//					String orgID = getStringCellValue(cell);
-//					Integer intOrgID = null;
-//					if(orgID != null){
-//						intOrgID = Integer.parseInt(orgID);
-//					}
-					//managerCard.setOrgID(intOrgID);
-				}
+			if(k==MANAGER_CARD_ID_COLUMN){
+				String cardID = getStringCellValue(cell);
+				managerCard.setManagerCardID(cardID);
+			}else if(k==MANAGER_CARD_NAME_COLUMN){
+				String cardName = getStringCellValue(cell);
+				managerCard.setManagerCardName(cardName);
+			}else if(k==MANAGER_TYPE_COLUMN){
+				String type = getStringCellValue(cell);
+				managerCard.setManagerType(type);
+			}else if(k==ORG_ID_COLUMN){
+				String orgID = getStringCellValue(cell);
+				managerCard.setOrgID(orgID);
+			}
 		}
 		
 		return managerCard;
@@ -61,8 +57,8 @@ public class ManagerCardImporter extends ExcelUtil<ManagerCard> {
 		for (int j = BEGIN_DATA_ROW; j <= numOfRows; j++) {
 			//获取行
 			Row row = sheet.getRow(j);
-			ManagerCard card = readCell(row);
-			manageCards.add(card);
+			ManagerCard mgrCard = readCell(row);
+			manageCards.add(mgrCard);
 		}		
 		return manageCards;
 	}

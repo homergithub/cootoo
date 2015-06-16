@@ -46,5 +46,10 @@ public class SystemManagementDaoImpl implements SystemManagementDao{
 		return sqlSessionTemplate.insert("systemModule.insertLogin", login);
 	}
 
+	@Override
+	public Map<String, Object> selectLoginRole(String loginAccount) {
+		return sqlSessionTemplate.selectOne("systemModule.selectLoginRole", loginAccount);
+	}
+
 
 }

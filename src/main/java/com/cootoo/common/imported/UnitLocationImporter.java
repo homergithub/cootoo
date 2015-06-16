@@ -32,37 +32,33 @@ public class UnitLocationImporter extends ExcelUtil<UnitLocation>{
 			//获取单元格
 			Cell cell = row.getCell(k);
 			
-				if(k==LOCATION_ID_COLUMN){
-					String locationID = getStringCellValue(cell);
-					unitLocation.setLocationID(locationID);
-				}else if(k==UNIT_NAME_COLUMN){
-					String unitName = getStringCellValue(cell);
-					unitLocation.setUnitName(unitName);
-				}else if(k==PARENT_NODE_COLUMN){
-					String parentNode = getStringCellValue(cell);
-					unitLocation.setParentNode(parentNode);
-				}else if(k==UNIT_TYPE_COLUMN){
-					String unitType = getStringCellValue(cell);
-					unitLocation.setUnitType(unitType);
-				}else if(k==ORG_ID_COLUMN){
-					String org = getStringCellValue(cell);
-					//Integer orgID = null;
-					if(org!=null && !"".equals(org)){
-						//orgID = Integer.parseInt(org);
-					}
-					//unitLocation.setOrgID(orgID);
-				}else if(k==UNIT_SIZE_COLUMN){
-					String size = getStringCellValue(cell);
-					Integer unitSize = null;
-					if(size!=null && !"".equals(size)){
-						unitSize=Integer.parseInt(size);
-					}
-					unitLocation.setUnitSize(unitSize);
-				}else if(k==SEX_COLUMN){
-					String sex = getStringCellValue(cell);
-					unitLocation.setSex(sex);
+			if(k==LOCATION_ID_COLUMN){
+				String locationID = getStringCellValue(cell);
+				unitLocation.setLocationID(locationID);
+			}else if(k==UNIT_NAME_COLUMN){
+				String unitName = getStringCellValue(cell);
+				unitLocation.setUnitName(unitName);
+			}else if(k==PARENT_NODE_COLUMN){
+				String parentNode = getStringCellValue(cell);
+				unitLocation.setParentNode(parentNode);
+			}else if(k==UNIT_TYPE_COLUMN){
+				String unitType = getStringCellValue(cell);
+				unitLocation.setUnitType(unitType);
+			}else if(k==ORG_ID_COLUMN){
+				String orgID = getStringCellValue(cell);
+				unitLocation.setOrgID(orgID);
+			}else if(k==UNIT_SIZE_COLUMN){
+				String size = getStringCellValue(cell);
+				Integer unitSize = null;
+				if(size!=null && !"".equals(size)){
+					unitSize=Integer.parseInt(size);
 				}
+				unitLocation.setUnitSize(unitSize);
+			}else if(k==SEX_COLUMN){
+				String sex = getStringCellValue(cell);
+				unitLocation.setSex(sex);
 			}
+		}
 		
 		return unitLocation;
 	}

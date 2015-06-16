@@ -39,4 +39,62 @@
 		where locationID = #{locationID}
 	</update>
 	
+	
+	<!-- 根据登陆ID获取管理的校区信息，校管理员可以查看多条记录，宿管只能看到一条记录 -->
+	<select id="selectSchoolAreaByLoginID" parameterType="int" resultType="hashmap">
+		select e.locationID, 
+		e.unitName,
+		e.unitType,
+		e.unitSize,
+		e.sex
+		from ${db_conn}.tUnitLocation e
+		inner join 
+		(select distinct(parentNode)
+		from ${db_conn}.tRoleToLocation a
+		inner join ${db_conn}.tUnitLocation b on a.locationID = b.locationID 
+		inner join ${db_conn}.tLogin c on a.roleID = c.roleID
+		where c.loginID = #{loginID}
+		) d on e.locationID = d.parentNode
+	</select>
+	
+	<!-- 根据登录ID获取管理的楼栋信息，校管理员可以查看多条记录，宿管只能看到一条记录 -->
+	<select id="selectBuildingByLoginID" parameterType="int" resultType="hashmap">
+		select c.locationID,
+		c.unitName,
+		c.unitType,
+		c.unitSize,
+		c.sex
+		from ${db_conn}.tLogin a
+		inner join ${db_conn}.tRoleToLocation b on a.roleID = b.roleID
+		inner join ${db_conn}.tUnitLocation c on b.locationID = c.locationID
+		where a.loginID = #{loginID}
+	</select>
+	
+	<!-- 通过楼栋得到该栋所有层或者房间 -->
+	<select id="selectFloorOrRoomByLocationID" parameterType="string" resultType="hashmap">
+		select locationID,
+		unitName,
+		unitType,
+		unitSize,
+		sex
+		from tUnitLocation where parentNode = #{locationID}
+	</select>
+	
+	<!-- 验证excel中数据的顺序 -->
+	<select id="selectTreePathByOrgID" parameterType="string" resultType="int">
+		select count(*) FROM ${db_conn}.tUnitLocation 
+		where orgID = #{orgID}
+		and treePath is null;
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 </mapper>

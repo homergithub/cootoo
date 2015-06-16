@@ -12,6 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.cootoo.metamanagement.domain.ManagerCard;
 import com.cootoo.metamanagement.service.MgrCardManagementService;
@@ -36,6 +38,17 @@ public class MgrCardManagementAction{
 		mgrCardList.add(mgrCard);
 		Map<String, Object> result = mgrCardManagementServiceImpl.addMgrCard(mgrCardList);
 		return result;
+	}
+	
+	@RequestMapping(value="managerCardImport",method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String,Object> managerCardImport(HttpServletRequest request){
+		
+		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+		MultipartFile file = multipartRequest.getFile("file");	
+		Map<String, Object> result = mgrCardManagementServiceImpl.addManagerCard(file);	
+		return result;
+		
 	}
 	
 	@RequestMapping(value="deleteMgrCard",method=RequestMethod.POST)
