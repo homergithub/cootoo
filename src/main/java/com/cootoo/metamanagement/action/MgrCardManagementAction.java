@@ -21,7 +21,7 @@ import com.cootoo.metamanagement.service.MgrCardManagementService;
 @RequestMapping(value="/mgrCardManagement/")
 @Controller
 public class MgrCardManagementAction{
-
+	
 	@Autowired
 	private MgrCardManagementService mgrCardManagementServiceImpl;
 	
@@ -73,5 +73,6 @@ public class MgrCardManagementAction{
 		Map<String, Object> result = mgrCardManagementServiceImpl.modifyMgrCard(mgrCard);
 		return result;
 	}
+	
 	
 }

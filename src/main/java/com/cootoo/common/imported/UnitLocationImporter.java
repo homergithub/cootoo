@@ -7,6 +7,7 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 
+import com.cootoo.common.exception.SexColumnFormatException;
 import com.cootoo.common.util.ExcelUtil;
 import com.cootoo.metamanagement.domain.UnitLocation;
 
@@ -24,7 +25,7 @@ public class UnitLocationImporter extends ExcelUtil<UnitLocation>{
 	
 	
 	@Override
-	protected UnitLocation readCell(Row row) {
+	protected UnitLocation readCell(Row row) throws SexColumnFormatException {
 		UnitLocation unitLocation = new UnitLocation();
 		int numOfCells = row.getLastCellNum();
 
@@ -56,6 +57,9 @@ public class UnitLocationImporter extends ExcelUtil<UnitLocation>{
 				unitLocation.setUnitSize(unitSize);
 			}else if(k==SEX_COLUMN){
 				String sex = getStringCellValue(cell);
+				if("男".equals(sex) || "女".equals(sex)){
+					throw new SexColumnFormatException();
+				}
 				unitLocation.setSex(sex);
 			}
 		}
@@ -64,7 +68,7 @@ public class UnitLocationImporter extends ExcelUtil<UnitLocation>{
 	}
 
 	@Override
-	protected List<UnitLocation> readRow(Sheet sheet) {
+	protected List<UnitLocation> readRow(Sheet sheet) throws SexColumnFormatException {
 		List<UnitLocation> unitLocations = new ArrayList<UnitLocation>();
 		int numOfRows = sheet.getLastRowNum();
 		for (int j = BEGIN_DATA_ROW; j <= numOfRows; j++) {

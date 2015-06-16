@@ -22,6 +22,7 @@ import com.cootoo.metamanagement.service.DepartManagementService;
 @Controller
 public class DepartManagementAction{
 
+	
 	@Autowired
 	private DepartManagementService departManagementServiceImpl;
 	
@@ -97,6 +98,6 @@ public class DepartManagementAction{
 		
 	}
 	
-	
+
 	
 }

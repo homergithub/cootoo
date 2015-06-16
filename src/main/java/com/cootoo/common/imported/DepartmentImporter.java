@@ -7,7 +7,6 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 
-import com.cootoo.common.exception.DataFormatException;
 import com.cootoo.common.util.ExcelUtil;
 import com.cootoo.metamanagement.domain.Department;
 
@@ -26,7 +25,7 @@ public class DepartmentImporter extends ExcelUtil<Department> {
 	
 	
 	@Override
-	protected Department readCell(Row row) throws DataFormatException {
+	protected Department readCell(Row row){
 		Department depart = new Department();
 		int numOfCells = row.getLastCellNum();
 		
@@ -67,7 +66,7 @@ public class DepartmentImporter extends ExcelUtil<Department> {
 	}
 
 	@Override
-	protected List<Department> readRow(Sheet sheet) throws DataFormatException {
+	protected List<Department> readRow(Sheet sheet){
 		List<Department> departs = new ArrayList<Department>();
 		int numOfRows = sheet.getLastRowNum();
 		for (int j = BEGIN_DATA_ROW; j <= numOfRows; j++) {

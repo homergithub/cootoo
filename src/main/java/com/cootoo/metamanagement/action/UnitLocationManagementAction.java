@@ -55,7 +55,7 @@ public class UnitLocationManagementAction{
 	
 	@RequestMapping(value="importUnitLocation",method=RequestMethod.POST)
 	@ResponseBody
-	public Map<String,Object> unitLocationImport(HttpServletRequest request){
+	public Map<String,Object> importUnitLocation(HttpServletRequest request){
 		
 		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
 		MultipartFile file = multipartRequest.getFile("file");

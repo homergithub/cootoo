@@ -15,12 +15,16 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.cootoo.common.exception.DataFormatException;
 
-
+/**
+ * 子类可以通过抛出DataFormatException异常的子类，在对于的service层捕获即可
+ * @author Homer
+ * @param <T>
+ */
 public abstract class ExcelUtil<T> {
 
 	private final static Logger logger = Logger.getLogger(ExcelUtil.class);
 	
-	private int BEGIN_DATA_ROW = 2;
+	private int BEGIN_DATA_ROW = 1;
 	
 	public  List<List<T>> readExcel(Workbook workBook) throws DataFormatException{
 		List<List<T>> object = new ArrayList<List<T>>();

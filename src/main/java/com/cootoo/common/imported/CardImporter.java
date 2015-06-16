@@ -7,7 +7,6 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 
-import com.cootoo.common.exception.SexColumnFormatException;
 import com.cootoo.common.util.ExcelUtil;
 import com.cootoo.metamanagement.domain.Card;
 
@@ -23,7 +22,7 @@ public class CardImporter extends ExcelUtil<Card> {
 	public static final int BEGIN_DATA_ROW = 1;
 	
 	@Override
-	protected Card readCell(Row row) throws SexColumnFormatException {
+	protected Card readCell(Row row){
 		
 		Card card = new Card();
 		int numOfCells = row.getLastCellNum();
@@ -64,7 +63,7 @@ public class CardImporter extends ExcelUtil<Card> {
 	}
 
 	@Override
-	protected List<Card> readRow(Sheet sheet) throws SexColumnFormatException {
+	protected List<Card> readRow(Sheet sheet){
 		List<Card> cards = new ArrayList<Card>();
 		int numOfRows = sheet.getLastRowNum();
 		for (int j = BEGIN_DATA_ROW; j <= numOfRows; j++) {

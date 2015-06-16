@@ -7,7 +7,6 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 
-import com.cootoo.common.exception.DataFormatException;
 import com.cootoo.common.util.ExcelUtil;
 import com.cootoo.metamanagement.domain.ManagerCard;
 
@@ -24,7 +23,7 @@ public class ManagerCardImporter extends ExcelUtil<ManagerCard> {
 	
 	
 	@Override
-	protected ManagerCard readCell(Row row) throws DataFormatException {
+	protected ManagerCard readCell(Row row){
 		ManagerCard managerCard = new ManagerCard();
 		int numOfCells = row.getLastCellNum();
 		
@@ -51,7 +50,7 @@ public class ManagerCardImporter extends ExcelUtil<ManagerCard> {
 	}
 
 	@Override
-	protected List<ManagerCard> readRow(Sheet sheet) throws DataFormatException {
+	protected List<ManagerCard> readRow(Sheet sheet){
 		List<ManagerCard> manageCards = new ArrayList<ManagerCard>();
 		int numOfRows = sheet.getLastRowNum();
 		for (int j = BEGIN_DATA_ROW; j <= numOfRows; j++) {
